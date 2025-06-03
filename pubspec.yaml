@@ -12,6 +12,10 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+  stacked_hooks: ^0.2.4
+  stacked: ^3.4.4
+  overlay_support: ^2.1.0
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
