@@ -12,7 +12,7 @@ class AppTheme {
   static const double labelLarge = 10;
   static const double labelMedium = 8;
 
-  static String fontFamily = 'Lufga';
+  static String fontFamily = 'Monterrat';
 
   static TextTheme _buildTextTheme(Color textColor) {
     return TextTheme(
