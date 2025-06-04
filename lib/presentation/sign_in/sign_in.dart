@@ -54,7 +54,7 @@ class SignIn extends StatelessWidget with ThemeHelper {
               ),
               64.h,
               TextButton(
-                onPressed: () {},
+                onPressed: () => model.logIn(context),
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(AppColor.appColor),
                   shape: WidgetStatePropertyAll(

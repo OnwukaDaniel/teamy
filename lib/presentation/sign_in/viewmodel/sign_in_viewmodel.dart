@@ -11,4 +11,17 @@ class SignInViewmodel extends BaseViewModel {
     _visiblePassword = value;
     notifyListeners();
   }
+
+  logIn(BuildContext context) async {
+    setBusy(true);
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    final res = await AuthRepo.signIn(email, password);
+    setBusy(false);
+    if(res.status) {
+      if(res.data) AppMessage.msg(res.message);
+    } else {
+      AppMessage.msg(res.message);
+    }
+  }
 }
