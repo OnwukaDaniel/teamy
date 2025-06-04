@@ -4,6 +4,7 @@ class SignInViewmodel extends BaseViewModel {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool _visiblePassword = false;
+  final signInFormKey = GlobalKey<FormState>();
 
   bool get visiblePassword => _visiblePassword;
 
@@ -13,15 +14,22 @@ class SignInViewmodel extends BaseViewModel {
   }
 
   logIn(BuildContext context) async {
+    if(!signInFormKey.currentState!.validate()) return;
     setBusy(true);
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
     final res = await AuthRepo.signIn(email, password);
     setBusy(false);
-    if(res.status) {
-      if(res.data) AppMessage.msg(res.message);
-    } else {
-      AppMessage.msg(res.message);
+    switch (res.status) {
+      case true:
+        if (res.data == null) {
+          AppMessage.msg(res.message);
+        } else {
+
+        }
+        break;
+      case false:
+        AppMessage.msg(res.message);
     }
   }
 }

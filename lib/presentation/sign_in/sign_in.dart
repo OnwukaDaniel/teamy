@@ -11,67 +11,72 @@ class SignIn extends StatelessWidget with ThemeHelper {
       builder: (context, model, _) {
         return Scaffold(
           backgroundColor: bgColor,
-          body: ListView(
-            padding: EdgeInsets.all(16),
-            children: [
-              kToolbarHeight.h,
-              Container(
-                decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(16),
+          body: Form(
+            key: model.signInFormKey,
+            child: ListView(
+              padding: EdgeInsets.all(16),
+              children: [
+                kToolbarHeight.h,
+                Container(
+                  decoration: BoxDecoration(
+                    color: cardColor,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      (size.height * .05).h,
+                      Image.asset('assets/app_icon.png', width: 60, height: 60),
+                      24.h,
+                      Text('Minimalistic Team', style: tm),
+                      (size.height * .05).h,
+                    ],
+                  ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    (size.height * .05).h,
-                    Image.asset('assets/app_icon.png', width: 60, height: 60),
-                    24.h,
-                    Text('Minimalistic Team', style: tm),
-                    (size.height * .05).h,
-                  ],
+                kToolbarHeight.h,
+                Text(
+                  'Welcome Back !',
+                  style: tm.copyWith(fontWeight: FontWeight.w900),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              kToolbarHeight.h,
-              Text(
-                'Welcome Back !',
-                style: tm.copyWith(fontWeight: FontWeight.w900),
-                textAlign: TextAlign.center,
-              ),
-              (kToolbarHeight * .5).h,
-              input(
-                model,
-                hint: 'Email',
-                keyboardType: TextInputType.emailAddress,
-                controller: model.emailController,
-              ),
-              24.h,
-              input(
-                model,
-                hint: 'Password',
-                keyboardType: TextInputType.visiblePassword,
-                controller: model.passwordController,
-                obscureText: model.visiblePassword,
-              ),
-              64.h,
-              TextButton(
-                onPressed: () => model.logIn(context),
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(AppColor.appColor),
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                (kToolbarHeight * .5).h,
+                input(
+                  model,
+                  hint: 'Email',
+                  keyboardType: TextInputType.emailAddress,
+                  controller: model.emailController,
+                  validator: ValidatorService.validateEmail,
+                ),
+                24.h,
+                input(
+                  model,
+                  hint: 'Password',
+                  keyboardType: TextInputType.visiblePassword,
+                  controller: model.passwordController,
+                  obscureText: model.visiblePassword,
+                  validator: ValidatorService.validatePassword,
+                ),
+                64.h,
+                TextButton(
+                  onPressed: () => model.logIn(context),
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(AppColor.appColor),
+                    shape: WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      'Sign In',
+                      style: bl.copyWith(color: Colors.white),
                     ),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    'Sign In',
-                    style: bl.copyWith(color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
           bottomNavigationBar: InkWell(
             onTap: () {},
@@ -96,6 +101,7 @@ class SignIn extends StatelessWidget with ThemeHelper {
     TextInputAction? textInputAction,
     bool obscureText = false,
     String? hint,
+    String? Function(String?)? validator,
   }) {
     Widget eyeIcon() {
       return IconButton(
@@ -113,6 +119,7 @@ class SignIn extends StatelessWidget with ThemeHelper {
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       obscureText: obscureText,
+      validator: validator,
       decoration: InputDecoration(
         focusedBorder: border(),
         filled: true,

@@ -18,3 +18,4 @@ export 'package:teamy/models/user_data.dart';
 export 'dart:convert';
 export 'package:teamy/repo/auth_repo.dart';
 export 'package:teamy/utils/app_message.dart';
+export 'package:teamy/services/validator_service.dart';
