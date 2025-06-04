@@ -1,7 +1,7 @@
 import 'package:teamy/imports.dart';
 
 class AppColor{
-  static const appColor = Color(0xFFF28C0D);
+  static const appColor = Color(0xFFDA0000);
   static const appSecondary = Color(0xFF9C5432);
   static const appGreen = Color(0xFF009900);
   static const brandingError = Color(0xFFF1352B);
