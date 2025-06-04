@@ -67,19 +67,22 @@ class SignIn extends StatelessWidget with ThemeHelper {
                       ),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      'Sign In',
-                      style: bl.copyWith(color: Colors.white),
-                    ),
-                  ),
+                  child:
+                      model.isBusy
+                          ? CircularProgressIndicator(color: Colors.white)
+                          : Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              'Sign In',
+                              style: bl.copyWith(color: Colors.white),
+                            ),
+                          ),
                 ),
               ],
             ),
           ),
           bottomNavigationBar: InkWell(
-            onTap: () {},
+            onTap: () => model.goToSignUp(context),
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Text(

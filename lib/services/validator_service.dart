@@ -38,4 +38,23 @@ class ValidatorService {
     }
     return null;
   }
+
+  static String? validateConfirmPassword(String? value, String password) {
+    if (password.isEmpty) {
+      return 'Password cannot be empty';
+    }
+    if (value == null || value.isEmpty) {
+      return 'Confirm Password cannot be empty';
+    }
+    if (password.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    if (value.length < 6) {
+      return 'Confirm Password must be at least 6 characters';
+    }
+    if (value != password) {
+      return "Passwords don't match";
+    }
+    return null;
+  }
 }
