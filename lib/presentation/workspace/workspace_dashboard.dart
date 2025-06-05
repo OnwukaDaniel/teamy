@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:teamy/imports.dart';
 
-class WorkspaceDashboard extends StatelessWidget with ThemeHelper, StaticWidgets {
+class WorkspaceDashboard extends StatelessWidget
+    with ThemeHelper, StaticWidgets {
   final WorkspaceData workspaceData;
 
   const WorkspaceDashboard(this.workspaceData, {super.key});
@@ -9,7 +12,7 @@ class WorkspaceDashboard extends StatelessWidget with ThemeHelper, StaticWidgets
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return ViewModelBuilder.reactive(
-      viewModelBuilder: ()=> WorkspaceViewmodel(),
+      viewModelBuilder: () => WorkspaceViewmodel(),
       builder: (context, model, _) {
         return Scaffold(
           backgroundColor: bgColor,
@@ -108,13 +111,13 @@ class WorkspaceDashboard extends StatelessWidget with ThemeHelper, StaticWidgets
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed:() => createTask(context),
+            onPressed: () => createTask(context, model),
             shape: CircleBorder(),
             backgroundColor: bl.color,
             child: Icon(Icons.add, color: bgColor),
           ),
         );
-      }
+      },
     );
   }
 
@@ -138,40 +141,77 @@ class WorkspaceDashboard extends StatelessWidget with ThemeHelper, StaticWidgets
     );
   }
 
-  createTask(BuildContext context) {
-    showDialog(context: context, builder: (_) {
-      return AlertDialog(
-        backgroundColor: bgColor,
-        title: Text('Create New Task', style: tl.copyWith(fontWeight: FontWeight.w800),),
-        content: Column(
-          children: [
-            Text('Create New Task', style: tl.copyWith(fontWeight: FontWeight.w800),),
-          ],
-        ),
-      );
-    });
+  createTask(BuildContext context, WorkspaceViewmodel model) {
+    final size = MediaQuery.of(context).size;
+    showDialog(
+      context: context,
+      builder: (_) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: AlertDialog(
+            backgroundColor: bgColor,
+            title: Text(
+              'Create New Task',
+              style: tl.copyWith(fontWeight: FontWeight.w800),
+            ),
+            content: SizedBox(
+              width: size.width * .88,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Text(
+                    'FIll in the details to create a task',
+                    style: bl.copyWith(fontWeight: FontWeight.w800),
+                  ),
+                  36.h,
+                  input(
+                    hint: 'Description',
+                    textInputAction: TextInputAction.next,
+                    controller: model.descriptionController,
+                    validator: ValidatorService.validateName,
+                  ),
+                  input(
+                    hint: 'Deadline',
+                    textInputAction: TextInputAction.next,
+                    readOnly: true,
+                    suffix: Icon(Icons.date_range, color: bl.color),
+                    controller: model.commentsController,
+                  ),
+                  input(
+                    hint: 'Comments',
+                    textInputAction: TextInputAction.next,
+                    minLines: 5,
+                    controller: model.commentsController,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
-
-  Widget input(
-      CreateWorkspaceViewmodel model, {
-        TextEditingController? controller,
-        TextInputType? keyboardType,
-        TextInputAction? textInputAction,
-        bool obscureText = false,
-        int minLines = 1,
-        String? hint,
-        String? Function(String?)? validator,
-      }) {
+  Widget input({
+    TextEditingController? controller,
+    TextInputType? keyboardType,
+    TextInputAction? textInputAction,
+    bool readOnly = false,
+    int minLines = 1,
+    String? hint,
+    Widget? suffix,
+    String? Function(String?)? validator,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        16.h,
         if (hint != null) ...[Text(hint, style: bm), 12.h],
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           textInputAction: textInputAction,
-          obscureText: obscureText,
+          readOnly: readOnly,
           validator: validator,
           minLines: minLines,
           maxLines: minLines,
@@ -179,6 +219,7 @@ class WorkspaceDashboard extends StatelessWidget with ThemeHelper, StaticWidgets
             focusedBorder: border(),
             filled: true,
             hintText: hint,
+            suffixIcon: suffix,
             fillColor: Colors.grey.withAlpha(40),
             border: border(),
             enabledBorder: border(),
