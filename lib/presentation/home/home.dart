@@ -1,4 +1,6 @@
 import 'package:teamy/imports.dart';
+import 'package:teamy/presentation/home/views/home_body.dart';
+import 'package:teamy/presentation/home/views/home_navigation_bar.dart';
 
 class Home extends StatelessWidget with ThemeHelper {
   const Home({super.key});
@@ -14,70 +16,10 @@ class Home extends StatelessWidget with ThemeHelper {
           backgroundColor: bgColor,
           body: Stack(
             children: [
-              Positioned(
-                bottom: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Material(
-                    borderRadius: BorderRadius.circular(64),
-                    clipBehavior: Clip.hardEdge,
-                    color: cardColor,
-                    child: SizedBox(
-                      width: size.width - 12,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children:
-                            model.bottomIcons.map((e) {
-                              return Expanded(
-                                child: Container(
-                                  color:
-                                      model.selectedIcon == e
-                                          ? AppColor.appColor.withAlpha(200)
-                                          : null,
-                                  child: InkWell(
-                                    onTap: () => model.setBottomIcon(e),
-                                    child: Column(
-                                      children: [
-                                        8.h,
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 18,
-                                          ),
-                                          child: SvgPicture.asset(
-                                            e.asset,
-                                            width: 20,
-                                            color:
-                                                model.selectedIcon == e
-                                                    ? Colors.white
-                                                    : bl.color,
-                                          ),
-                                        ),
-                                        3.h,
-                                        Text(
-                                          e.name,
-                                          style: bm.copyWith(
-                                            fontWeight:
-                                                model.selectedIcon == e
-                                                    ? FontWeight.w800
-                                                    : null,
-                                            color:
-                                                model.selectedIcon == e
-                                                    ? Colors.white
-                                                    : bl.color,
-                                          ),
-                                        ),
-                                        8.h,
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              model.selectedIcon.name.toLowerCase() == 'home'
+                  ? HomeBody()
+                  : Placeholder(),
+              Positioned(bottom: 1, child: HomeNavigationBar()),
               Positioned(
                 bottom: 16,
                 right: 1,
@@ -92,14 +34,7 @@ class Home extends StatelessWidget with ThemeHelper {
                         borderRadius: BorderRadius.circular(600),
                         clipBehavior: Clip.hardEdge,
                         child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (_) => CreateNewWorkspace(),
-                              ),
-                            );
-                          },
+                          onTap: () => model.createWorkspace(context),
                           child: SvgPicture.asset('assets/add.svg', width: 60),
                         ),
                       ),
