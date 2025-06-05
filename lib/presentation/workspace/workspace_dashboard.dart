@@ -175,13 +175,38 @@ class WorkspaceDashboard extends StatelessWidget
                     textInputAction: TextInputAction.next,
                     readOnly: true,
                     suffix: Icon(Icons.date_range, color: bl.color),
-                    controller: model.commentsController,
+                    onTap: () => model.pickDate(context),
                   ),
                   input(
                     hint: 'Comments',
                     textInputAction: TextInputAction.next,
                     minLines: 5,
                     controller: model.commentsController,
+                  ),
+                  16.h,
+                  Text('Tags', style: bm),
+                  12.h,
+                  Wrap(
+                    children:
+                        model.tagList.map((e) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: TextButton(
+                              onPressed: () => model.addToTagList(e),
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(
+                                  model.addedTagList.contains(e)
+                                      ? AppColor.appColor
+                                      : Colors.transparent,
+                                ),
+                              ),
+                              child: Text(
+                                e,
+                                style: bm.copyWith(fontWeight: FontWeight.w800),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                   ),
                 ],
               ),
@@ -201,6 +226,7 @@ class WorkspaceDashboard extends StatelessWidget
     String? hint,
     Widget? suffix,
     String? Function(String?)? validator,
+    Function()? onTap,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,6 +240,7 @@ class WorkspaceDashboard extends StatelessWidget
           readOnly: readOnly,
           validator: validator,
           minLines: minLines,
+          onTap: onTap,
           maxLines: minLines,
           decoration: InputDecoration(
             focusedBorder: border(),
