@@ -138,7 +138,7 @@ class TaskHelper with ThemeHelper, StaticWidgets {
           Row(
             children: [
               Text(hint, style: bm),
-              6.h,
+              6.w,
               Text(subHint ?? '', style: bm.copyWith(color: Colors.grey)),
             ],
           ),

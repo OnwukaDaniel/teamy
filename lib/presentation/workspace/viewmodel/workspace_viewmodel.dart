@@ -28,6 +28,8 @@ class WorkspaceViewmodel extends BaseViewModel {
 
   createTask(BuildContext context, String id) {
     if(!formKey.currentState!.validate()) return;
+    final description = descriptionController.text.trim();
+    final comments = commentsController.text.trim();
 
   }
 
