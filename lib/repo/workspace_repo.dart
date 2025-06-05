@@ -47,7 +47,21 @@ class WorkspaceRepo {
       final workspaces = data.where((e) => e.uid == local.id).toList();
       return NetworkData(status: true, data: workspaces, message: 'Success');
     } catch (e) {
-      return NetworkData(message: 'Failed to create workspace try again $e');
+      return NetworkData(message: 'Failed to get workspaces try again $e');
+    }
+  }
+
+  static Future<NetworkData> createTask(TaskData data) async {
+    try {
+      var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
+      final taskList =
+          jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
+      taskList.add(data);
+      jsonString = taskList.map((e) => jsonEncode(e.toJson())).toList();
+      await LocalStorage.setStringList(Preferences.tasksJson, jsonString);
+      return NetworkData(status: true, data: null, message: 'Success');
+    } catch (e) {
+      return NetworkData(message: 'Failed to create task try again $e');
     }
   }
 }

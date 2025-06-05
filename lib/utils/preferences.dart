@@ -3,4 +3,5 @@ class Preferences {
   static final String usersListJson = 'usersListJson';
   static final String usersJson = 'userJson';
   static final String workspaceJson = 'workspaceJson';
+  static final String tasksJson = 'tasksJson';
 }
