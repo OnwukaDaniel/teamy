@@ -1,5 +1,4 @@
 import 'package:teamy/imports.dart';
-import 'package:teamy/presentation/create_workspace/view_model/create_workspace_viewmodel.dart';
 
 class CreateNewWorkspace extends StatelessWidget with ThemeHelper {
   const CreateNewWorkspace({super.key});

@@ -13,8 +13,12 @@ class WorkspaceRepo {
       final data =
           jsonString.map((e) => WorkspaceData.fromJson(jsonDecode(e))).toList();
       final local = await AuthRepo.getLocalUser();
+      if (local == null) {
+        return NetworkData(message: 'Unable to get local user. Sign in');
+      }
       data.add(
         WorkspaceData(
+          uid: local.id,
           name: name,
           description: desc,
           asset: asset ?? '',

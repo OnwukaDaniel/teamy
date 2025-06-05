@@ -30,3 +30,4 @@ export 'package:teamy/extensions/string_extension.dart';
 export 'package:teamy/presentation/create_workspace/create_new_workspace.dart';
 export 'package:teamy/models/workspace_data.dart';
 export 'package:teamy/repo/workspace_repo.dart';
+export 'package:teamy/presentation/create_workspace/view_model/create_workspace_viewmodel.dart';
