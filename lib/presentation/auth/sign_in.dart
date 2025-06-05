@@ -1,6 +1,6 @@
 import 'package:teamy/imports.dart';
 
-class SignIn extends StatelessWidget with ThemeHelper {
+class SignIn extends StatelessWidget with ThemeHelper, StaticWidgets {
   const SignIn({super.key});
 
   @override
@@ -133,13 +133,6 @@ class SignIn extends StatelessWidget with ThemeHelper {
         suffixIcon:
             keyboardType == TextInputType.visiblePassword ? eyeIcon() : null,
       ),
-    );
-  }
-
-  OutlineInputBorder border() {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: Colors.grey.withAlpha(40)),
     );
   }
 }

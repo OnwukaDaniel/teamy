@@ -1,6 +1,6 @@
 import 'package:teamy/imports.dart';
 
-class SignUp extends StatelessWidget with ThemeHelper {
+class SignUp extends StatelessWidget with ThemeHelper, StaticWidgets {
   const SignUp({super.key});
 
   @override
@@ -158,13 +158,6 @@ class SignUp extends StatelessWidget with ThemeHelper {
           ),
         ],
       ),
-    );
-  }
-
-  OutlineInputBorder border() {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: Colors.grey.withAlpha(40)),
     );
   }
 }

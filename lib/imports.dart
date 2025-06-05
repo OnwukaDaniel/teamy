@@ -32,4 +32,6 @@ export 'package:teamy/models/workspace_data.dart';
 export 'package:teamy/repo/workspace_repo.dart';
 export 'package:teamy/presentation/create_workspace/view_model/create_workspace_viewmodel.dart';
 export 'package:stacked_hooks/stacked_hooks.dart';
-export 'package:teamy/presentation/home/workspace_dashboard.dart';
+export 'package:teamy/presentation/workspace/workspace_dashboard.dart';
+export 'package:teamy/presentation/workspace/viewmodel/workspace_viewmodel.dart';
+export 'package:teamy/mixins/static_widgets.dart';

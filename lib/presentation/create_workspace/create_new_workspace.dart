@@ -1,6 +1,7 @@
 import 'package:teamy/imports.dart';
 
-class CreateNewWorkspace extends StatelessWidget with ThemeHelper {
+class CreateNewWorkspace extends StatelessWidget
+    with ThemeHelper, StaticWidgets {
   const CreateNewWorkspace({super.key});
 
   @override
@@ -142,13 +143,6 @@ class CreateNewWorkspace extends StatelessWidget with ThemeHelper {
           ),
         ),
       ],
-    );
-  }
-
-  OutlineInputBorder border() {
-    return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: Colors.grey.withAlpha(40)),
     );
   }
 }
