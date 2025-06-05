@@ -63,6 +63,12 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
                         ],
                       ),
                     ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => TaskHelper().createTask(context, workspaceId),
+              shape: CircleBorder(),
+              backgroundColor: bl.color,
+              child: Icon(Icons.add, color: bgColor),
+            ),
           ),
     );
   }
@@ -136,9 +142,7 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
               children: [
                 Text(
                   task.description,
-                  style: bl.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: bl.copyWith(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 8),
                 Text(
