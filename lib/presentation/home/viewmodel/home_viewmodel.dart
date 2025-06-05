@@ -38,5 +38,6 @@ class HomeViewmodel extends BaseViewModel {
       context,
       CupertinoPageRoute(builder: (_) => CreateNewWorkspace()),
     );
+    getWorkspace();
   }
 }
