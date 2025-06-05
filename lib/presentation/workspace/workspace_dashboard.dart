@@ -11,6 +11,7 @@ class WorkspaceDashboard extends StatelessWidget
     final size = MediaQuery.of(context).size;
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => WorkspaceViewmodel(),
+      onViewModelReady: (model) => model.init(workspaceData),
       builder: (context, model, _) {
         return Scaffold(
           backgroundColor: bgColor,
@@ -93,18 +94,26 @@ class WorkspaceDashboard extends StatelessWidget
                 card(
                   'To Do-s',
                   Icon(Icons.circle_outlined, color: Colors.lightGreenAccent),
-                  () {},
+                  () => model.goToTasks(context),
                 ),
                 8.h,
                 card(
                   'Doing',
                   Icon(Icons.circle, color: Colors.yellowAccent),
-                  () {},
+                  () => model.goToTasks(context),
                 ),
                 8.h,
-                card('Expired', Icon(Icons.circle, color: Colors.red), () {}),
+                card(
+                  'Expired',
+                  Icon(Icons.circle, color: Colors.red),
+                  () => model.goToTasks(context),
+                ),
                 8.h,
-                card('Done', Icon(Icons.circle, color: Colors.green), () {}),
+                card(
+                  'Done',
+                  Icon(Icons.circle, color: Colors.green),
+                  () => model.goToTasks(context),
+                ),
               ],
             ],
           ),
@@ -121,7 +130,7 @@ class WorkspaceDashboard extends StatelessWidget
 
   Widget card(String title, Widget icon, Function() onTap) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 18),
         child: Row(

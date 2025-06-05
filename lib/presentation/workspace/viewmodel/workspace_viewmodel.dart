@@ -1,4 +1,5 @@
 import 'package:teamy/imports.dart';
+import 'package:teamy/presentation/tasks/tasks_screen.dart';
 
 class WorkspaceViewmodel extends BaseViewModel {
   TextEditingController descriptionController = TextEditingController();
@@ -6,6 +7,8 @@ class WorkspaceViewmodel extends BaseViewModel {
   TextEditingController commentsController = TextEditingController();
   DateTime? date;
   final formKey = GlobalKey<FormState>();
+  late WorkspaceData workspaceData;
+
   List<String> tagList = [
     '#project',
     '#priority-high',
@@ -20,14 +23,25 @@ class WorkspaceViewmodel extends BaseViewModel {
 
   List<String> get addedTagList => _addedTagList;
   List<TaskData> _tasks = [];
+
   List<TaskData> get tasks => _tasks;
 
   // Get tasks filtered by status
-  List<TaskData> get toDoTasks => _tasks.where((task) => task.status == TaskStatus.toDo.name).toList();
-  List<TaskData> get doingTasks => _tasks.where((task) => task.status == TaskStatus.doing.name).toList();
-  List<TaskData> get expiredTasks => _tasks.where((task) => task.status == TaskStatus.expired.name).toList();
-  List<TaskData> get doneTasks => _tasks.where((task) => task.status == TaskStatus.done.name).toList();
+  List<TaskData> get toDoTasks =>
+      _tasks.where((task) => task.status == TaskStatus.toDo.name).toList();
 
+  List<TaskData> get doingTasks =>
+      _tasks.where((task) => task.status == TaskStatus.doing.name).toList();
+
+  List<TaskData> get expiredTasks =>
+      _tasks.where((task) => task.status == TaskStatus.expired.name).toList();
+
+  List<TaskData> get doneTasks =>
+      _tasks.where((task) => task.status == TaskStatus.done.name).toList();
+
+  init(WorkspaceData input) {
+    workspaceData = input;
+  }
 
   addToTagList(String input) {
     _addedTagList.add(input);
@@ -81,5 +95,16 @@ class WorkspaceViewmodel extends BaseViewModel {
       this.date = date;
       dateControllerController.text = DateFormat('dd-MM-yyyy').format(date);
     }
+  }
+
+  goToTasks(BuildContext context) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (_) {
+          return TasksScreen(workspaceId: workspaceData.id);
+        },
+      ),
+    );
   }
 }
