@@ -3,7 +3,7 @@ class TaskData {
   String id;
   String deadline;
   String description;
-  String comments;
+  List<String> comments;
   String status;
   List<String>? tags;
 
@@ -12,7 +12,7 @@ class TaskData {
     this.id = '',
     this.deadline = '',
     this.description = '',
-    this.comments = '',
+    this.comments = const [],
     this.status = '',
     this.tags,
   });
@@ -23,7 +23,7 @@ class TaskData {
       id: json['id'] ?? '',
       deadline: json['deadline'] ?? '',
       description: json['description'] ?? '',
-      comments: json['comments'] ?? '',
+      comments: ((json['comments'] ?? []) as List).map((e)=> e.toString()).toList(),
       status: json['status'] ?? '',
       tags: ((json['tags'] ?? []) as List).map((e)=> e.toString()).toList(),
     );

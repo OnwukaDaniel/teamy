@@ -1,4 +1,5 @@
 import 'package:teamy/imports.dart';
+import 'package:teamy/presentation/comments/comments_screen.dart';
 
 class WorkspaceViewmodel extends BaseViewModel {
   TextEditingController descriptionController = TextEditingController();
@@ -47,7 +48,7 @@ class WorkspaceViewmodel extends BaseViewModel {
     editingTaskData = input;
     if (input != null) {
       try {
-        commentsController.text = input.comments;
+        commentsController.text = input.comments.firstOrNull??'';
         descriptionController.text = input.description;
         _addedTagList.addAll(input.tags ?? []);
         final deadline = DateTime.parse(input.deadline);
@@ -79,7 +80,7 @@ class WorkspaceViewmodel extends BaseViewModel {
       workspaceId: workspaceId,
       deadline: date!.toIso8601String(),
       description: description,
-      comments: comments,
+      comments: [comments],
       status: TaskStatus.toDo.name,
       tags: addedTagList,
     );
@@ -87,7 +88,7 @@ class WorkspaceViewmodel extends BaseViewModel {
       editingTaskData!.tags = addedTagList;
       editingTaskData!.deadline = date!.toIso8601String();
       editingTaskData!.description = description;
-      editingTaskData!.comments = comments;
+      editingTaskData!.comments.add(comments);
     }
     setBusy(true);
     final res =
@@ -143,21 +144,15 @@ class WorkspaceViewmodel extends BaseViewModel {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (_) {
-          return TasksScreen(workspaceId: workspaceData.id);
-        },
+        builder: (_) => TasksScreen(workspaceId: workspaceData.id),
       ),
     );
   }
 
-  goToComments(BuildContext context) {
+  goToComments(BuildContext context, TaskData data) {
     Navigator.push(
       context,
-      CupertinoPageRoute(
-        builder: (_) {
-          return TasksScreen(workspaceId: workspaceData.id);
-        },
-      ),
+      CupertinoPageRoute(builder: (_) => CommentsScreen(taskData: data)),
     );
   }
 }

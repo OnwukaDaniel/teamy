@@ -42,3 +42,4 @@ export 'package:teamy/utils/task_helper.dart';
 export 'package:teamy/models/task_data.dart';
 export 'package:teamy/enums/task_status.dart';
 export 'package:teamy/presentation/tasks/tasks_screen.dart';
+export 'package:teamy/presentation/comments/viewmodel/comment_viewmodel.dart';

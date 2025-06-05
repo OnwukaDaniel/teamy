@@ -177,7 +177,7 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
         child: Builder(
           builder: (context) {
             return InkWell(
-              onTap: () => model.goToComments(context),
+              onTap: () => model.goToComments(context, task),
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
