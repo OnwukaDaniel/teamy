@@ -34,24 +34,28 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
                             title: 'To Do',
                             tasks: model.toDoTasks,
                             color: Colors.orange[100]!,
+                            model: model,
                           ),
                           const SizedBox(height: 24),
                           _buildTaskSection(
                             title: 'Doing',
                             tasks: model.doingTasks,
                             color: Colors.blue[100]!,
+                            model: model,
                           ),
                           const SizedBox(height: 24),
                           _buildTaskSection(
                             title: 'Expired',
                             tasks: model.expiredTasks,
                             color: Colors.red[400]!,
+                            model: model,
                           ),
                           const SizedBox(height: 24),
                           _buildTaskSection(
                             title: 'Done',
                             tasks: model.doneTasks,
                             color: Colors.green[100]!,
+                            model: model,
                           ),
                         ],
                       ),
@@ -73,6 +77,7 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
     required String title,
     required List<TaskData> tasks,
     required Color color,
+    required WorkspaceViewmodel model,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,12 +99,12 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
             ),
           )
         else
-          ...tasks.map((task) => _buildTaskCard(task, color)),
+          ...tasks.map((task) => _buildTaskCard(task, color, model)),
       ],
     );
   }
 
-  Widget _buildTaskCard(TaskData task, Color sectionColor) {
+  Widget _buildTaskCard(TaskData task, Color sectionColor, WorkspaceViewmodel model) {
     DateTime? deadline;
     String formattedDeadline = '';
     try {
@@ -110,59 +115,74 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
     }
     String tags = task.tags?.fold('', (a, b) => '$a, $b') ?? '';
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: cardTheme,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+    return Slidable(
+      key: ValueKey(task.id),
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (context) => model.deleteTask(task.id, workspaceId),
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: 'Delete',
           ),
         ],
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  task.description,
-                  style: bl.copyWith(fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Deadline: $formattedDeadline',
-                  style: bs.copyWith(color: Colors.grey[600]),
-                ),
-                if (tags.isNotEmpty) ...[
-                  const SizedBox(height: 4),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: cardTheme,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    'TAGS: $tags',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: bm.copyWith(
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.w500,
-                    ),
+                    task.description,
+                    style: bl.copyWith(fontWeight: FontWeight.w600),
                   ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Deadline: $formattedDeadline',
+                    style: bs.copyWith(color: Colors.grey[600]),
+                  ),
+                  if (tags.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      'TAGS: $tags',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: bm.copyWith(
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: sectionColor.withAlpha(100),
-              borderRadius: BorderRadius.circular(8),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: sectionColor.withAlpha(100),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(Icons.edit, color: bl.color, size: 20),
             ),
-            child: Icon(Icons.edit, color: bl.color, size: 20),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

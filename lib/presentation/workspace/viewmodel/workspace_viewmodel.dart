@@ -44,7 +44,9 @@ class WorkspaceViewmodel extends BaseViewModel {
   }
 
   addToTagList(String input) {
-    _addedTagList.add(input);
+    _addedTagList.contains(input)
+        ? _addedTagList.remove(input)
+        : _addedTagList.add(input);
     notifyListeners();
   }
 
@@ -80,6 +82,18 @@ class WorkspaceViewmodel extends BaseViewModel {
     if (res.status) {
       _tasks = res.data ?? [];
       notifyListeners();
+    } else {
+      AppMessage.msg(res.message);
+    }
+  }
+
+  deleteTask(String taskId, String workspaceId) async {
+    setBusy(true);
+    final res = await WorkspaceRepo.deleteTask(taskId);
+    setBusy(false);
+    if (res.status) {
+      AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);
+      fetchTasks(workspaceId);
     } else {
       AppMessage.msg(res.message);
     }
