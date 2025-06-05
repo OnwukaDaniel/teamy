@@ -13,12 +13,26 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
   void setCurrentTask(TaskData task) {
     _currentTask = task;
     _comments.addAll(task.comments);
-    fetchComments(task.id);
+    getAndSetAllComments();
   }
 
-  void fetchComments(String taskId) {
+  fetchComments(String taskId) async {
     setBusy(true);
+    final res = await WorkspaceRepo.getTasks(_currentTask.workspaceId);
     setBusy(false);
+    if (res.status) {
+      final tasks = res.data as List<TaskData>;
+      final filter = tasks.where((e) => e.id == _currentTask.id).toList();
+      if(filter.isNotEmpty) _currentTask = filter.first;
+      getAndSetAllComments();
+    } else {
+      AppMessage.msg(res.message);
+    }
+  }
+
+  getAndSetAllComments() {
+    _comments.clear();
+    _comments.addAll(_currentTask.comments);
     notifyListeners();
   }
 
@@ -28,7 +42,7 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
     notifyListeners();
   }
 
-  Future<void> editComment(String oldComment, String newComment) async {
+  editComment(String oldComment, String newComment) async {
     setBusy(true);
     final res = await WorkspaceRepo.editComment(
       _currentTask,
@@ -45,12 +59,11 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
 
   void deleteComment(String commentId) {}
 
-  void showEditDialog(BuildContext context, String comment) {
+  showEditDialog(BuildContext context, String comment) async {
     editCommentController.text = comment;
-    showDialog(
+    await showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
+      builder: (context) => AlertDialog(
             title: Text('Edit Comment', style: tl),
             backgroundColor: bgColor,
             content: TextField(
@@ -82,6 +95,7 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
             ],
           ),
     );
+    fetchComments(_currentTask.id);
   }
 
   void showDeleteDialog(BuildContext context, String commentId) {

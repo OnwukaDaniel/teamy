@@ -232,7 +232,7 @@ class CommentsScreen extends StatelessWidget with ThemeHelper {
                 child: Icon(Icons.person, color: Colors.blue[600], size: 20),
               ),
              12.w,
-              Expanded(child: Text(comment, style: bm, maxLines: 2)),
+              Expanded(child: Text(comment, style: bm)),
               12.w,
               IconButton(
                 onPressed:

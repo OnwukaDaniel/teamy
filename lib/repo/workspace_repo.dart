@@ -138,7 +138,6 @@ class WorkspaceRepo {
       }
       taskList[taskIndex].comments[commentIndex] = newComment;
 
-      // Save the updated list back to local storage
       jsonString = taskList.map((e) => jsonEncode(e.toJson())).toList();
       await LocalStorage.setStringList(Preferences.tasksJson, jsonString);
 
