@@ -30,31 +30,24 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // To Do Section
                           _buildTaskSection(
                             title: 'To Do',
                             tasks: model.toDoTasks,
                             color: Colors.red[100]!,
                           ),
                           const SizedBox(height: 24),
-
-                          // Doing Section
                           _buildTaskSection(
                             title: 'Doing',
                             tasks: model.doingTasks,
                             color: Colors.blue[100]!,
                           ),
                           const SizedBox(height: 24),
-
-                          // Expired Section
                           _buildTaskSection(
                             title: 'Expired',
                             tasks: model.expiredTasks,
                             color: Colors.orange[100]!,
                           ),
                           const SizedBox(height: 24),
-
-                          // Done Section
                           _buildTaskSection(
                             title: 'Done',
                             tasks: model.doneTasks,
@@ -116,18 +109,13 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
     } catch (e) {
       formattedDeadline = task.deadline;
     }
-
-    // Extract project name from tags or use first tag
-    String projectName = '';
-    if (task.tags != null && task.tags!.isNotEmpty) {
-      projectName = task.tags!.first.replaceAll('#', '');
-    }
+    String tags = task.tags?.fold('', (a, b) => '$a, $b') ?? '';
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardTheme,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -152,10 +140,12 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
                   'Deadline: $formattedDeadline',
                   style: bs.copyWith(color: Colors.grey[600]),
                 ),
-                if (projectName.isNotEmpty) ...[
+                if (tags.isNotEmpty) ...[
                   const SizedBox(height: 4),
                   Text(
-                    'Project ${projectName.toUpperCase()}',
+                    'TAGS: $tags',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: bm.copyWith(
                       color: Colors.grey[600],
                       fontWeight: FontWeight.w500,
@@ -168,10 +158,10 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: sectionColor.withOpacity(0.3),
+              color: sectionColor.withAlpha(100),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(Icons.edit, color: Colors.grey[600], size: 20),
+            child: Icon(Icons.edit, color: bl.color, size: 20),
           ),
         ],
       ),
