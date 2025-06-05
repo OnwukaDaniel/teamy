@@ -98,7 +98,7 @@ class CreateNewWorkspace extends StatelessWidget with ThemeHelper {
                           : Padding(
                             padding: const EdgeInsets.all(8),
                             child: Text(
-                              'Sign In',
+                              'Create',
                               style: bl.copyWith(color: Colors.white),
                             ),
                           ),

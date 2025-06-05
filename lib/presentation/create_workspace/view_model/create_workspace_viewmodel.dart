@@ -17,14 +17,24 @@ class CreateWorkspaceViewmodel extends BaseViewModel {
   ];
 
   selectIcon(String e) {
-    _icon= e;
+    _icon = e;
     notifyListeners();
   }
 
   createWorkSpace(BuildContext context) async {
-    if(!formKey.currentState!.validate()) return;
+    if (!formKey.currentState!.validate()) return;
     setBusy(true);
-    //final res = await ;
+    final res = await WorkspaceRepo.createWorkSpace(
+      nameController.text.trim(),
+      descriptionController.text.trim(),
+      asset: _icon,
+    );
     setBusy(false);
+    if (res.status && context.mounted) {
+      AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);
+      return Navigator.pop(context);
+    } else {
+      AppMessage.msg(res.message);
+    }
   }
 }

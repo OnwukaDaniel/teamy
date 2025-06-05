@@ -1,31 +1,35 @@
 class WorkspaceData {
+  String uid;
   String id;
   String name;
-  String email;
-  String password;
+  String description;
+  String asset;
 
   WorkspaceData({
+    this.uid = '',
     this.id = '',
     this.name = '',
-    this.email = '',
-    this.password = '',
+    this.description = '',
+    this.asset = '',
   });
 
   factory WorkspaceData.fromJson(Map<String, dynamic> json) {
     return WorkspaceData(
+      uid: json['uid'] ?? '',
       id: json['id'] ?? '',
       name: json['name'] ?? '',
-      email: json['email'] ?? '',
-      password: json['password'] ?? '',
+      description: json['description'] ?? '',
+      asset: json['asset'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'uid': uid,
       'id': id,
       'name': name,
-      'email': email,
-      'password': password,
+      'description': description,
+      'asset': asset,
     };
   }
 }

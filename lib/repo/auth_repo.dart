@@ -50,7 +50,7 @@ class AuthRepo {
         return NetworkData(status: true, data: user, message: 'Success');
       }
     } catch (e) {
-      return NetworkData(message: 'Unable to sign in. $e');
+      return NetworkData(message: 'Unable to sign up. $e');
     }
   }
 
