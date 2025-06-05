@@ -3,9 +3,9 @@ import 'package:teamy/imports.dart';
 class AuthRepo {
   static Future<NetworkData> signIn(String email, String password) async {
     try {
-      final jsonString = LocalStorage.getStringList(Preferences.userJson);
+      final jsonString = await LocalStorage.getStringList(Preferences.usersListJson);
       '$jsonString'.log;
-      final data = jsonString.map((e) => jsonDecode(e) as UserData).toList();
+      final data = jsonString.map((e) => UserData.fromJson(jsonDecode(e))).toList();
       final users = data.where(
         (e) => e.email == email && e.password == password,
       );
@@ -16,7 +16,7 @@ class AuthRepo {
           message: 'Invalid credentials',
         );
       }
-      return NetworkData(status: true, data: data, message: 'Success');
+      return NetworkData(status: true, data: users.first, message: 'Success');
     } catch (e) {
       return NetworkData(message: 'Unable to sign in. $e');
     }
@@ -28,7 +28,7 @@ class AuthRepo {
     String name,
   ) async {
     try {
-      final jsonString = LocalStorage.getStringList(Preferences.userJson);
+      final jsonString = await LocalStorage.getStringList(Preferences.usersListJson);
       if (jsonString.isNotEmpty) {
         final data =
             jsonString.map((e) => UserData.fromJson(jsonDecode(e))).toList();
@@ -61,5 +61,13 @@ class AuthRepo {
       email: email,
       password: password,
     );
+  }
+
+  static Future<UserData?> getLocalUser() async {
+    try {
+      final jsonString = await LocalStorage.getString(Preferences.usersJson);
+      return UserData.fromJson(jsonDecode(jsonString));
+    } catch (e) {}
+    return null;
   }
 }

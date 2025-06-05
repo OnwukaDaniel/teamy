@@ -79,13 +79,14 @@ class SignInViewmodel extends BaseViewModel {
     );
   }
 
-  completeAuth(NetworkData res, BuildContext context, {required bool create}) {
+  completeAuth(NetworkData res, BuildContext context, {required bool create}) async {
+    final user = res.data as UserData;
     if (create) {
-      final user = res.data as UserData;
-      final jsonString = LocalStorage.getStringList(Preferences.userJson);
+      final jsonString = await LocalStorage.getStringList(Preferences.usersListJson);
       jsonString.add(jsonEncode(user.toJson()));
-      LocalStorage.setStringList(Preferences.userJson, jsonString);
+      LocalStorage.setStringList(Preferences.usersListJson, jsonString);
     }
+    LocalStorage.setString(Preferences.usersJson, jsonEncode(user));
     AppMessage.msg(res.message, color: Colors.green, textColor: Colors.white);
     Navigator.pushAndRemoveUntil(
       context,

@@ -8,11 +8,15 @@ class SplashScreen extends StatelessWidget with ThemeHelper {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final largeSide = size.width > size.height ? size.width : size.height;
-    SchedulerBinding.instance.addPersistentFrameCallback((_) {
+    SchedulerBinding.instance.addPersistentFrameCallback((_) async {
       if (!context.mounted) return;
+      final jsonString = await LocalStorage.getString(Preferences.usersJson);
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => SignIn()),
+        MaterialPageRoute(
+          builder: (_) => jsonString.isEmpty ? SignIn() : Home(),
+        ),
       );
     });
 

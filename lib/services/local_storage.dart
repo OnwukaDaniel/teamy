@@ -12,27 +12,33 @@ class LocalStorage {
     _pref ??= await SharedPreferences.getInstance();
   }
 
-  static setString(String key, String value) {
+  static setString(String key, String value) async {
+    await init();
     _pref?.setString(key, value);
   }
 
-  static String getString(String key) {
+  static Future<String> getString(String key) async {
+    await init();
     return _pref?.getString(key) ?? "";
   }
 
-  static setBool(String key, bool value) {
+  static setBool(String key, bool value) async {
+    await init();
     _pref?.setBool(key, value);
   }
 
-  static bool getBool(String key) {
+  static Future<bool> getBool(String key) async {
+    await init();
     return _pref?.getBool(key) ?? false;
   }
 
-  static setStringList(String key, List<String> value) {
+  static setStringList(String key, List<String> value) async {
+    await init();
     _pref?.setStringList(key, value);
   }
 
-  static List<String> getStringList(String key) {
+  static Future<List<String>> getStringList(String key) async {
+    await init();
     return _pref?.getStringList(key) ?? [];
   }
 
