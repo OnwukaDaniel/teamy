@@ -58,6 +58,7 @@ class WorkspaceRepo {
           jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
       taskList.add(data);
       jsonString = taskList.map((e) => jsonEncode(e.toJson())).toList();
+      jsonString = jsonString.reversed.toList();
       await LocalStorage.setStringList(Preferences.tasksJson, jsonString);
       return NetworkData(status: true, data: null, message: 'Success');
     } catch (e) {
