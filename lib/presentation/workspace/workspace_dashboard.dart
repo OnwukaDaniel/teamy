@@ -111,7 +111,7 @@ class WorkspaceDashboard extends StatelessWidget
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => createTask(context, model),
+            onPressed: () => createTask(context),
             shape: CircleBorder(),
             backgroundColor: bl.color,
             child: Icon(Icons.add, color: bgColor),
@@ -141,76 +141,85 @@ class WorkspaceDashboard extends StatelessWidget
     );
   }
 
-  createTask(BuildContext context, WorkspaceViewmodel model) {
+  createTask(BuildContext context) {
     final size = MediaQuery.of(context).size;
     showDialog(
       context: context,
       builder: (_) {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: AlertDialog(
-            backgroundColor: bgColor,
-            title: Text(
-              'Create New Task',
-              style: tl.copyWith(fontWeight: FontWeight.w800),
-            ),
-            content: SizedBox(
-              width: size.width * .88,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Text(
-                    'FIll in the details to create a task',
-                    style: bl.copyWith(fontWeight: FontWeight.w800),
-                  ),
-                  36.h,
-                  input(
-                    hint: 'Description',
-                    textInputAction: TextInputAction.next,
-                    controller: model.descriptionController,
-                    validator: ValidatorService.validateName,
-                  ),
-                  input(
-                    hint: 'Deadline',
-                    textInputAction: TextInputAction.next,
-                    readOnly: true,
-                    suffix: Icon(Icons.date_range, color: bl.color),
-                    onTap: () => model.pickDate(context),
-                  ),
-                  input(
-                    hint: 'Comments',
-                    textInputAction: TextInputAction.next,
-                    minLines: 5,
-                    controller: model.commentsController,
-                  ),
-                  16.h,
-                  Text('Tags', style: bm),
-                  12.h,
-                  Wrap(
-                    children:
-                        model.tagList.map((e) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: TextButton(
-                              onPressed: () => model.addToTagList(e),
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(
-                                  model.addedTagList.contains(e)
-                                      ? AppColor.appColor
-                                      : Colors.transparent,
+          child: ViewModelBuilder.reactive(
+            viewModelBuilder: () => WorkspaceViewmodel(),
+            builder: (context, model, _) {
+              return AlertDialog(
+                backgroundColor: bgColor,
+                title: Text(
+                  'Create New Task',
+                  style: tl.copyWith(fontWeight: FontWeight.w800),
+                ),
+                content: SizedBox(
+                  width: size.width * .88,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Text(
+                        'FIll in the details to create a task',
+                        style: bl.copyWith(fontWeight: FontWeight.w800),
+                      ),
+                      36.h,
+                      input(
+                        hint: 'Description',
+                        textInputAction: TextInputAction.next,
+                        controller: model.descriptionController,
+                        validator: ValidatorService.validateName,
+                      ),
+                      input(
+                        hint: 'Deadline',
+                        textInputAction: TextInputAction.next,
+                        readOnly: true,
+                        suffix: Icon(Icons.date_range, color: bl.color),
+                        onTap: () => model.pickDate(context),
+                      ),
+                      input(
+                        hint: 'Comments',
+                        textInputAction: TextInputAction.next,
+                        minLines: 5,
+                        controller: model.commentsController,
+                      ),
+                      16.h,
+                      Text('Tags', style: bm),
+                      12.h,
+                      Wrap(
+                        children:
+                            model.tagList.map((e) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
                                 ),
-                              ),
-                              child: Text(
-                                e,
-                                style: bm.copyWith(fontWeight: FontWeight.w800),
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                                child: TextButton(
+                                  onPressed: () => model.addToTagList(e),
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStatePropertyAll(
+                                      model.addedTagList.contains(e)
+                                          ? AppColor.appColor
+                                          : Colors.transparent,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    e,
+                                    style: bm.copyWith(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
         );
       },
