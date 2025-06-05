@@ -19,7 +19,6 @@ class WorkspaceDashboard extends StatelessWidget with ThemeHelper {
         ),
       ),
       body: ListView(
-        //padding: EdgeInsets.all(16),
         children: [
           Stack(
             alignment: Alignment.topCenter,
@@ -100,8 +99,16 @@ class WorkspaceDashboard extends StatelessWidget with ThemeHelper {
             ),
             8.h,
             card('Done', Icon(Icons.circle, color: Colors.green), () {}),
+            8.h,
+            card('Expired', Icon(Icons.circle, color: Colors.red), () {}),
           ],
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        shape: CircleBorder(),
+        backgroundColor: bl.color,
+        child: Icon(Icons.add, color: bgColor),
       ),
     );
   }
