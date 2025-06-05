@@ -64,4 +64,16 @@ class WorkspaceRepo {
       return NetworkData(message: 'Failed to create task try again $e');
     }
   }
+
+  static Future<NetworkData> getTasks(String workspaceId) async {
+    try {
+      final jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
+      final taskList =
+      jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
+      final workspaceTasks = taskList.where((task) => task.workspaceId == workspaceId).toList();
+      return NetworkData(status: true, data: workspaceTasks, message: 'Success');
+    } catch (e) {
+      return NetworkData(message: 'Failed to get tasks try again $e');
+    }
+  }
 }

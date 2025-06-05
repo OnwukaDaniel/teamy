@@ -19,6 +19,15 @@ class WorkspaceViewmodel extends BaseViewModel {
   List<String> _addedTagList = [];
 
   List<String> get addedTagList => _addedTagList;
+  List<TaskData> _tasks = [];
+  List<TaskData> get tasks => _tasks;
+
+  // Get tasks filtered by status
+  List<TaskData> get toDoTasks => _tasks.where((task) => task.status == TaskStatus.toDo.name).toList();
+  List<TaskData> get doingTasks => _tasks.where((task) => task.status == TaskStatus.doing.name).toList();
+  List<TaskData> get expiredTasks => _tasks.where((task) => task.status == TaskStatus.expired.name).toList();
+  List<TaskData> get doneTasks => _tasks.where((task) => task.status == TaskStatus.done.name).toList();
+
 
   addToTagList(String input) {
     _addedTagList.add(input);
@@ -45,6 +54,18 @@ class WorkspaceViewmodel extends BaseViewModel {
     if (res.status) {
       AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);
       if (context.mounted) Navigator.pop(context);
+    } else {
+      AppMessage.msg(res.message);
+    }
+  }
+
+  fetchTasks(String workspaceId) async {
+    setBusy(true);
+    final res = await WorkspaceRepo.getTasks(workspaceId);
+    setBusy(false);
+    if (res.status) {
+      _tasks = res.data ?? [];
+      notifyListeners();
     } else {
       AppMessage.msg(res.message);
     }
