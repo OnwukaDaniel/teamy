@@ -65,10 +65,12 @@ class WorkspaceDashboard extends StatelessWidget with ThemeHelper {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    workspaceData.name,
-                    textAlign: TextAlign.center,
-                    style: tl.copyWith(fontWeight: FontWeight.w800),
+                  Center(
+                    child: Text(
+                      workspaceData.name,
+                      textAlign: TextAlign.center,
+                      style: tl.copyWith(fontWeight: FontWeight.w800),
+                    ),
                   ),
                   12.h,
                   Text(
@@ -79,13 +81,47 @@ class WorkspaceDashboard extends StatelessWidget with ThemeHelper {
                   32.h,
                   Text(
                     'Lists',
-                    style: bm.copyWith(fontWeight: FontWeight.w800),
+                    style: bl.copyWith(fontWeight: FontWeight.w800),
                   ),
+                  24.h,
                 ],
               ),
             ),
+            card(
+              'To Do-s',
+              Icon(Icons.circle_outlined, color: Colors.lightGreenAccent),
+              () {},
+            ),
+            8.h,
+            card(
+              'Doing',
+              Icon(Icons.circle, color: Colors.yellowAccent),
+              () {},
+            ),
+            8.h,
+            card('Done', Icon(Icons.circle, color: Colors.green), () {}),
           ],
         ],
+      ),
+    );
+  }
+
+  Widget card(String title, Widget icon, Function() onTap) {
+    return InkWell(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 18),
+        child: Row(
+          children: [
+            16.w,
+            icon,
+            12.w,
+            Text(title, style: bm),
+            Spacer(),
+            Icon(Icons.arrow_forward_rounded, color: bl.color),
+            16.w,
+          ],
+        ),
       ),
     );
   }
