@@ -42,7 +42,8 @@ class LocalStorage {
     return _pref?.getStringList(key) ?? [];
   }
 
-  static clear() {
+  static clear() async {
+    await init();
     _pref?.clear();
   }
 }

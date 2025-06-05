@@ -68,11 +68,18 @@ class WorkspaceRepo {
 
   static Future<NetworkData> getTasks(String workspaceId) async {
     try {
-      final jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
+      final jsonString = await LocalStorage.getStringList(
+        Preferences.tasksJson,
+      );
       final taskList =
-      jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
-      final workspaceTasks = taskList.where((task) => task.workspaceId == workspaceId).toList();
-      return NetworkData(status: true, data: workspaceTasks, message: 'Success');
+          jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
+      final workspaceTasks =
+          taskList.where((task) => task.workspaceId == workspaceId).toList();
+      return NetworkData(
+        status: true,
+        data: workspaceTasks,
+        message: 'Success',
+      );
     } catch (e) {
       return NetworkData(message: 'Failed to get tasks try again $e');
     }
@@ -82,10 +89,12 @@ class WorkspaceRepo {
     try {
       var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
       final taskList =
-      jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
+          jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
 
       // Find the task to edit
-      final taskIndex = taskList.indexWhere((task) => task.id == updatedTask.id);
+      final taskIndex = taskList.indexWhere(
+        (task) => task.id == updatedTask.id,
+      );
       if (taskIndex == -1) {
         return NetworkData(message: 'Task not found');
       }
@@ -97,7 +106,47 @@ class WorkspaceRepo {
       jsonString = taskList.map((e) => jsonEncode(e.toJson())).toList();
       await LocalStorage.setStringList(Preferences.tasksJson, jsonString);
 
-      return NetworkData(status: true, data: null, message: 'Task updated successfully');
+      return NetworkData(
+        status: true,
+        data: null,
+        message: 'Task updated successfully',
+      );
+    } catch (e) {
+      return NetworkData(message: 'Failed to update task try again $e');
+    }
+  }
+
+  static Future<NetworkData> editComment(
+    TaskData task,
+    String oldComment,
+    String newComment,
+  ) async {
+    try {
+      var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
+      final taskList =
+          jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
+
+      final taskIndex = taskList.indexWhere((task) => task.id == task.id);
+      if (taskIndex == -1) {
+        return NetworkData(message: 'Task not found');
+      }
+      final commentIndex = taskList[taskIndex].comments.indexWhere(
+        (e) => e == oldComment,
+      );
+      if (commentIndex == -1) {
+        return NetworkData(message: 'Comment not found');
+      }
+      taskList[taskIndex].comments[commentIndex] = newComment;
+
+      // Save the updated list back to local storage
+      jsonString = taskList.map((e) => jsonEncode(e.toJson())).toList();
+      await LocalStorage.setStringList(Preferences.tasksJson, jsonString);
+
+      return NetworkData(
+        status: true,
+        data: null,
+        message: 'Task updated successfully',
+      );
     } catch (e) {
       return NetworkData(message: 'Failed to update task try again $e');
     }
@@ -107,7 +156,7 @@ class WorkspaceRepo {
     try {
       var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
       final taskList =
-      jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
+          jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
 
       // Find the task to delete
       final taskIndex = taskList.indexWhere((task) => task.id == taskId);
@@ -122,7 +171,11 @@ class WorkspaceRepo {
       jsonString = taskList.map((e) => jsonEncode(e.toJson())).toList();
       await LocalStorage.setStringList(Preferences.tasksJson, jsonString);
 
-      return NetworkData(status: true, data: null, message: 'Task deleted successfully');
+      return NetworkData(
+        status: true,
+        data: null,
+        message: 'Task deleted successfully',
+      );
     } catch (e) {
       return NetworkData(message: 'Failed to delete task try again $e');
     }

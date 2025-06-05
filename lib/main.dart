@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //LocalStorage.clear();
     return ValueListenableBuilder(
       valueListenable: themeData,
       builder: (context, value, _) {

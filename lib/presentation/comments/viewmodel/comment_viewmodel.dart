@@ -1,14 +1,14 @@
 import 'package:teamy/imports.dart';
 
-class CommentViewModel extends BaseViewModel {
+class CommentViewModel extends BaseViewModel with ThemeHelper {
   final TextEditingController commentController = TextEditingController();
   final TextEditingController editCommentController = TextEditingController();
   final List<String> _comments = [];
-  TaskData? _currentTask;
+  late TaskData _currentTask;
 
   List<String> get comments => _comments;
 
-  TaskData? get currentTask => _currentTask;
+  TaskData get currentTask => _currentTask;
 
   void setCurrentTask(TaskData task) {
     _currentTask = task;
@@ -28,21 +28,34 @@ class CommentViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void editComment(String commentId, String newComment) {}
+  Future<void> editComment(String oldComment, String newComment) async {
+    setBusy(true);
+    final res = await WorkspaceRepo.editComment(
+      _currentTask,
+      oldComment,
+      newComment,
+    );
+    setBusy(false);
+    if (res.status) {
+      AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);
+    } else {
+      AppMessage.msg(res.message);
+    }
+  }
 
   void deleteComment(String commentId) {}
 
-  // Show edit dialog
   void showEditDialog(BuildContext context, String comment) {
     editCommentController.text = comment;
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('Edit Comment'),
+            title: Text('Edit Comment', style: tl),
+            backgroundColor: bgColor,
             content: TextField(
               controller: editCommentController,
-              maxLines: 3,
+              maxLines: 6,
               decoration: const InputDecoration(
                 hintText: 'Enter your comment...',
                 border: OutlineInputBorder(),
@@ -51,14 +64,20 @@ class CommentViewModel extends BaseViewModel {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(Colors.red),
+                ),
+                child: Text('Cancel', style: bm.copyWith(color: Colors.white)),
               ),
               TextButton(
-                onPressed: () {
-                  editComment(comment, editCommentController.text.trim());
-                  Navigator.pop(context);
+                onPressed: () async {
+                  await editComment(comment, editCommentController.text.trim());
+                  if (context.mounted) Navigator.pop(context);
                 },
-                child: const Text('Save'),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(Colors.green),
+                ),
+                child: Text('Save', style: bm.copyWith(color: Colors.white)),
               ),
             ],
           ),
