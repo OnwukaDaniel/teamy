@@ -5,6 +5,7 @@ class WorkspaceViewmodel extends BaseViewModel {
   TextEditingController dateControllerController = TextEditingController();
   TextEditingController commentsController = TextEditingController();
   DateTime? date;
+  final formKey = GlobalKey<FormState>();
   List<String> tagList = [
     '#project',
     '#priority-high',
@@ -25,7 +26,10 @@ class WorkspaceViewmodel extends BaseViewModel {
     notifyListeners();
   }
 
-  createTask(BuildContext context) {}
+  createTask(BuildContext context, String id) {
+    if(!formKey.currentState!.validate()) return;
+
+  }
 
   pickDate(BuildContext context) async {
     final date = await showDatePicker(

@@ -109,7 +109,7 @@ class WorkspaceDashboard extends StatelessWidget
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => TaskHelper().createTask(context),
+            onPressed: () => TaskHelper().createTask(context, workspaceData.id),
             shape: CircleBorder(),
             backgroundColor: bl.color,
             child: Icon(Icons.add, color: bgColor),
