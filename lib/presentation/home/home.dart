@@ -14,7 +14,6 @@ class Home extends StatelessWidget with ThemeHelper {
           backgroundColor: bgColor,
           body: Stack(
             children: [
-
               Positioned(
                 bottom: 1,
                 child: Padding(
@@ -93,7 +92,14 @@ class Home extends StatelessWidget with ThemeHelper {
                         borderRadius: BorderRadius.circular(600),
                         clipBehavior: Clip.hardEdge,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (_) => CreateNewWorkspace(),
+                              ),
+                            );
+                          },
                           child: SvgPicture.asset('assets/add.svg', width: 60),
                         ),
                       ),

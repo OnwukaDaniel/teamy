@@ -27,3 +27,4 @@ export 'package:teamy/presentation/home/home.dart';
 export 'package:teamy/presentation/home/viewmodel/home_viewmodel.dart';
 export 'package:teamy/models/bottom_icons.dart';
 export 'package:teamy/extensions/string_extension.dart';
+export 'package:teamy/presentation/create_workspace/create_new_workspace.dart';

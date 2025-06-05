@@ -3,9 +3,9 @@ class ValidatorService {
     if (value == null || value.isEmpty) {
       return 'Name cannot be empty';
     }
-    if (value.split(' ').length < 2) {
-      return 'Enter your first name and last name';
-    }
+    // if (value.split(' ').length < 2) {
+    //   return 'Enter your first name and last name';
+    // }
     return null;
   }
 

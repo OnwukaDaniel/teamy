@@ -1,14 +1,21 @@
-import 'package:flutter/scheduler.dart';
 import 'package:teamy/imports.dart';
 
-class SplashScreen extends StatelessWidget with ThemeHelper {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final largeSide = size.width > size.height ? size.width : size.height;
-    SchedulerBinding.instance.addPersistentFrameCallback((_) async {
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> with ThemeHelper {
+  @override
+  void initState() {
+    navigate();
+    super.initState();
+  }
+
+  navigate() {
+    Future.delayed(Duration(seconds: 2), () async {
       if (!context.mounted) return;
       final jsonString = await LocalStorage.getString(Preferences.usersJson);
 
@@ -19,6 +26,12 @@ class SplashScreen extends StatelessWidget with ThemeHelper {
         ),
       );
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final largeSide = size.width > size.height ? size.width : size.height;
 
     return Scaffold(
       body: Stack(
