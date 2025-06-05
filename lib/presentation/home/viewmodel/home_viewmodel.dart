@@ -8,9 +8,6 @@ class HomeViewmodel extends BaseViewModel {
     BottomIcons(name: 'Home', asset: 'assets/home.svg'),
     BottomIcons(name: 'My Workspaces', asset: 'assets/workspaces.svg'),
   ];
-  final List<TaskData> _tasks = [];
-
-  List<TaskData> get tasks => _tasks;
 
   init() {
     selectedIcon = bottomIcons.first;
@@ -31,21 +28,8 @@ class HomeViewmodel extends BaseViewModel {
     final res = await WorkspaceRepo.getWorkSpaces();
     setBusy(false);
     if (res.status) {
+      workspaceList.clear();
       workspaceList = res.data as List<WorkspaceData>;
-      _tasks.clear();
-      for (WorkspaceData workspaceData in workspaceList) {
-        getAllTasksFromAllWorkspaces(workspaceData);
-      }
-      notifyListeners();
-    }
-  }
-
-  getAllTasksFromAllWorkspaces(WorkspaceData workspaceData) async {
-    setBusy(true);
-    final res = await WorkspaceRepo.getTasks(workspaceData.id);
-    setBusy(false);
-    if (res.status) {
-      _tasks.addAll(res.data as List<TaskData>);
       notifyListeners();
     }
   }
@@ -58,8 +42,8 @@ class HomeViewmodel extends BaseViewModel {
     getWorkspace();
   }
 
-  viewWorkSpace(BuildContext context, WorkspaceData data) {
-    Navigator.push(
+  viewWorkSpace(BuildContext context, WorkspaceData data) async {
+    await Navigator.push(
       context,
       CupertinoPageRoute(builder: (_) => WorkspaceDashboard(data)),
     );

@@ -33,6 +33,27 @@ class WorkspaceRepo {
     }
   }
 
+  static Future deleteWorkspace(String workspaceId) async {
+    try {
+      var jsonString = await LocalStorage.getStringList(
+        Preferences.workspaceJson,
+      );
+
+      final data = jsonString
+          .map((e) => WorkspaceData.fromJson(jsonDecode(e)))
+          .toList();
+
+      data.removeWhere((workspace) => workspace.id == workspaceId);
+
+      jsonString = data.map((e) => jsonEncode(e.toJson())).toList();
+      await LocalStorage.setStringList(Preferences.workspaceJson, jsonString);
+
+      return NetworkData(status: true, message: 'Workspace deleted successfully');
+    } catch (e) {
+      return NetworkData(message: 'Failed to delete workspace: $e');
+    }
+  }
+
   static Future<NetworkData> getWorkSpaces() async {
     try {
       final jsonString = await LocalStorage.getStringList(

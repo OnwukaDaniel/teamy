@@ -22,6 +22,13 @@ class WorkspaceDashboard extends StatelessWidget
               workspaceData.name,
               style: bl.copyWith(fontWeight: FontWeight.w800),
             ),
+            actions: [
+              IconButton(
+                onPressed: () => deleteWorkSpace(context, model),
+                icon: Icon(Icons.delete_forever_outlined, color: bl.color),
+              ),
+              12.w,
+            ],
           ),
           body: ListView(
             children: [
@@ -145,6 +152,41 @@ class WorkspaceDashboard extends StatelessWidget
           ],
         ),
       ),
+    );
+  }
+
+  deleteWorkSpace(BuildContext context, WorkspaceViewmodel model) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: bgColor,
+          title: Text('Delete Workspace', style: tm),
+          content: Text(
+            'Are you sure you want to delete this workspace?',
+            style: bl,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Colors.green),
+              ),
+              child: Text('Cancel', style: bm.copyWith(color: Colors.white)),
+            ),
+            TextButton(
+              onPressed: () async {
+                await model.deleteWorkSpace(context);
+                if (context.mounted) Navigator.pop(context);
+              },
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Colors.red),
+              ),
+              child: Text('Delete', style: bm.copyWith(color: Colors.white)),
+            ),
+          ],
+        );
+      },
     );
   }
 }

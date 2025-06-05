@@ -155,4 +155,16 @@ class WorkspaceViewmodel extends BaseViewModel {
       CupertinoPageRoute(builder: (_) => CommentsScreen(taskData: data)),
     );
   }
+
+  deleteWorkSpace(BuildContext context) async {
+    setBusy(true);
+    final res = await WorkspaceRepo.deleteWorkspace(workspaceData.id);
+    setBusy(false);
+    if (res.status && context.mounted) {
+      AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);
+      return Navigator.pop(context);
+    } else {
+      AppMessage.msg(res.message);
+    }
+  }
 }

@@ -96,7 +96,10 @@ class HomeBody extends StackedHookView<HomeViewmodel> with ThemeHelper {
           clipBehavior: Clip.hardEdge,
           borderRadius: BorderRadius.circular(12),
           child: InkWell(
-            onTap: () => model.viewWorkSpace(context, data),
+            onTap: () async {
+              await model.viewWorkSpace(context, data);
+              model.getWorkspace(); //refresh workspace
+            },
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
