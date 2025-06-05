@@ -65,50 +65,61 @@ class HomeBody extends StackedHookView<HomeViewmodel> with ThemeHelper {
                 ),
               )
               : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('My Workspace', style: tl),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text('My Workspaces', style: tm),
+                  ),
                   16.h,
                   Expanded(
                     child: ListView.builder(
+                      padding: EdgeInsets.all(16),
                       itemCount: model.workspaceList.length,
                       itemBuilder: (_, index) {
                         final data = model.workspaceList[index];
                         return Material(
                           clipBehavior: Clip.hardEdge,
                           borderRadius: BorderRadius.circular(12),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 4,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      data.name,
-                                      style: tm.copyWith(
-                                        fontWeight: FontWeight.w800,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 4,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data.name,
+                                        style: tm.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                        ),
                                       ),
-                                    ),
-                                    16.h,
-                                    Text(
-                                      data.description,
-                                      maxLines: 5,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: tm.copyWith(
-                                        fontWeight: FontWeight.w800,
+                                      16.h,
+                                      Text(
+                                        data.description,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: bs.copyWith(
+                                          fontWeight: FontWeight.w800,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              16.w,
-                              if (data.asset.isNotEmpty)
-                                Image.asset(data.asset),
-                            ],
+                                16.w,
+                                if (data.asset.isNotEmpty)
+                                  Expanded(child: Image.asset(data.asset)),
+                              ],
+                            ),
                           ),
                         );
                       },
                     ),
                   ),
+                  kToolbarHeight.h,
                 ],
               ),
     );
