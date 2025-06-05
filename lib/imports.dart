@@ -21,7 +21,7 @@ export 'package:teamy/repo/auth_repo.dart';
 export 'package:teamy/utils/app_message.dart';
 export 'package:teamy/services/validator_service.dart';
 export 'package:teamy/presentation/auth/sign_up.dart';
-export 'package:flutter/cupertino.dart' hide RefreshCallback;
+export 'package:flutter/cupertino.dart' hide RefreshCallback, ConfirmDismissCallback;
 export 'package:flutter_svg/flutter_svg.dart';
 export 'package:teamy/presentation/auth/sign_in.dart';
 export 'package:teamy/presentation/home/home.dart';
