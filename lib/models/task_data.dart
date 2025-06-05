@@ -25,7 +25,7 @@ class TaskData {
       description: json['description'] ?? '',
       comments: json['comments'] ?? '',
       status: json['status'] ?? '',
-      tags: json['tags'] ?? '',
+      tags: ((json['tags'] ?? []) as List).map((e)=> e.toString()).toList(),
     );
   }
 

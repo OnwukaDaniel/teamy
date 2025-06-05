@@ -1,9 +1,9 @@
 import 'package:teamy/imports.dart';
 
 class TaskHelper with ThemeHelper, StaticWidgets {
-  createTask(BuildContext context, String id) {
+  createTask(BuildContext context, String id) async {
     final size = MediaQuery.of(context).size;
-    showDialog(
+    await showDialog(
       context: context,
       builder: (_) {
         return BackdropFilter(

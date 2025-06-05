@@ -64,7 +64,10 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
                       ),
                     ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () => TaskHelper().createTask(context, workspaceId),
+              onPressed: () async {
+                await TaskHelper().createTask(context, workspaceId);
+                model.fetchTasks(workspaceId);
+              },
               shape: CircleBorder(),
               backgroundColor: bl.color,
               child: Icon(Icons.add, color: bgColor),
