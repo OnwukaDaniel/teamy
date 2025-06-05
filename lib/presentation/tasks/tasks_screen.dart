@@ -33,7 +33,7 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
                           _buildTaskSection(
                             title: 'To Do',
                             tasks: model.toDoTasks,
-                            color: Colors.red[100]!,
+                            color: Colors.orange[100]!,
                           ),
                           const SizedBox(height: 24),
                           _buildTaskSection(
@@ -45,7 +45,7 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
                           _buildTaskSection(
                             title: 'Expired',
                             tasks: model.expiredTasks,
-                            color: Colors.orange[100]!,
+                            color: Colors.red[400]!,
                           ),
                           const SizedBox(height: 24),
                           _buildTaskSection(
@@ -100,7 +100,6 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
   }
 
   Widget _buildTaskCard(TaskData task, Color sectionColor) {
-    // Parse the deadline
     DateTime? deadline;
     String formattedDeadline = '';
     try {
