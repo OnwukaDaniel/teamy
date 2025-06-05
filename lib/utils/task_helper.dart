@@ -1,7 +1,7 @@
 import 'package:teamy/imports.dart';
 
 class TaskHelper with ThemeHelper, StaticWidgets {
-  createTask(BuildContext context, String id) async {
+  createTask(BuildContext context, String workspaceId, {TaskData? taskData}) async {
     final size = MediaQuery.of(context).size;
     await showDialog(
       context: context,
@@ -10,6 +10,7 @@ class TaskHelper with ThemeHelper, StaticWidgets {
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: ViewModelBuilder.reactive(
             viewModelBuilder: () => WorkspaceViewmodel(),
+            onViewModelReady: (model) => model.initEditingTaskData(taskData),
             builder: (context, model, _) {
               return AlertDialog(
                 backgroundColor: bgColor,
@@ -82,7 +83,9 @@ class TaskHelper with ThemeHelper, StaticWidgets {
                               }).toList(),
                         ),
                         TextButton(
-                          onPressed: () => model.createTask(context, id),
+                          onPressed: () async {
+                            await model.createTask(context, workspaceId);
+                          },
                           style: ButtonStyle(
                             backgroundColor: WidgetStatePropertyAll(
                               AppColor.appColor,
@@ -101,7 +104,7 @@ class TaskHelper with ThemeHelper, StaticWidgets {
                                   : Padding(
                                     padding: const EdgeInsets.all(8),
                                     child: Text(
-                                      'Create Task',
+                                      '${taskData == null? 'Create': 'Edit'} Task',
                                       style: bl.copyWith(color: Colors.white),
                                     ),
                                   ),

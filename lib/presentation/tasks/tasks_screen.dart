@@ -104,7 +104,11 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
     );
   }
 
-  Widget _buildTaskCard(TaskData task, Color sectionColor, WorkspaceViewmodel model) {
+  Widget _buildTaskCard(
+    TaskData task,
+    Color sectionColor,
+    WorkspaceViewmodel model,
+  ) {
     DateTime? deadline;
     String formattedDeadline = '';
     try {
@@ -173,13 +177,31 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
                 ],
               ),
             ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: sectionColor.withAlpha(100),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(Icons.edit, color: bl.color, size: 20),
+            Builder(
+              builder: (context) {
+                return Material(
+                  borderRadius: BorderRadius.circular(8),
+                  clipBehavior: Clip.hardEdge,
+                  child: InkWell(
+                    onTap: () async {
+                      await TaskHelper().createTask(
+                        context,
+                        task.workspaceId,
+                        taskData: task,
+                      );
+                      model.fetchTasks(workspaceId);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: sectionColor.withAlpha(100),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(Icons.edit, color: bl.color, size: 20),
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),

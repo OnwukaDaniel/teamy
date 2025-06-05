@@ -78,6 +78,31 @@ class WorkspaceRepo {
     }
   }
 
+  static Future<NetworkData> editTask(TaskData updatedTask) async {
+    try {
+      var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
+      final taskList =
+      jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
+
+      // Find the task to edit
+      final taskIndex = taskList.indexWhere((task) => task.id == updatedTask.id);
+      if (taskIndex == -1) {
+        return NetworkData(message: 'Task not found');
+      }
+
+      // Replace the task with the updated data
+      taskList[taskIndex] = updatedTask;
+
+      // Save the updated list back to local storage
+      jsonString = taskList.map((e) => jsonEncode(e.toJson())).toList();
+      await LocalStorage.setStringList(Preferences.tasksJson, jsonString);
+
+      return NetworkData(status: true, data: null, message: 'Task updated successfully');
+    } catch (e) {
+      return NetworkData(message: 'Failed to update task try again $e');
+    }
+  }
+
   static Future<NetworkData> deleteTask(String taskId) async {
     try {
       var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
