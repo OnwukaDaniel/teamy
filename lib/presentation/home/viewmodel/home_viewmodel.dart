@@ -8,6 +8,9 @@ class HomeViewmodel extends BaseViewModel {
     BottomIcons(name: 'Home', asset: 'assets/home.svg'),
     BottomIcons(name: 'My Workspaces', asset: 'assets/workspaces.svg'),
   ];
+  final List<TaskData> _tasks = [];
+
+  List<TaskData> get tasks => _tasks;
 
   init() {
     selectedIcon = bottomIcons.first;
@@ -29,7 +32,20 @@ class HomeViewmodel extends BaseViewModel {
     setBusy(false);
     if (res.status) {
       workspaceList = res.data as List<WorkspaceData>;
-      '$workspaceList'.log;
+      _tasks.clear();
+      for (WorkspaceData workspaceData in workspaceList) {
+        getAllTasksFromAllWorkspaces(workspaceData);
+      }
+      notifyListeners();
+    }
+  }
+
+  getAllTasksFromAllWorkspaces(WorkspaceData workspaceData) async {
+    setBusy(true);
+    final res = await WorkspaceRepo.getTasks(workspaceData.id);
+    setBusy(false);
+    if (res.status) {
+      _tasks.addAll(res.data as List<TaskData>);
       notifyListeners();
     }
   }

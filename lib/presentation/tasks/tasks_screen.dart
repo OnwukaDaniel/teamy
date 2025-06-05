@@ -37,28 +37,28 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildTaskSection(
+                          buildTaskSection(
                             title: 'To Do',
                             tasks: model.toDoTasks,
                             color: Colors.orange[100]!,
                             model: model,
                           ),
                           const SizedBox(height: 24),
-                          _buildTaskSection(
+                          buildTaskSection(
                             title: 'Doing',
                             tasks: model.doingTasks,
                             color: Colors.blue[100]!,
                             model: model,
                           ),
                           const SizedBox(height: 24),
-                          _buildTaskSection(
+                          buildTaskSection(
                             title: 'Expired',
                             tasks: model.expiredTasks,
                             color: Colors.red[400]!,
                             model: model,
                           ),
                           const SizedBox(height: 24),
-                          _buildTaskSection(
+                          buildTaskSection(
                             title: 'Done',
                             tasks: model.doneTasks,
                             color: Colors.green[100]!,
@@ -106,7 +106,7 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
     );
   }
 
-  Widget _buildTaskSection({
+  Widget buildTaskSection({
     required String title,
     required List<TaskData> tasks,
     required Color color,
@@ -135,14 +135,14 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
           ...tasks.map(
             (task) => Padding(
               padding: const EdgeInsets.only(bottom: 12),
-              child: _buildTaskCard(task, color, model),
+              child: buildTaskCard(task, color, model),
             ),
           ),
       ],
     );
   }
 
-  Widget _buildTaskCard(
+  Widget buildTaskCard(
     TaskData task,
     Color sectionColor,
     WorkspaceViewmodel model,

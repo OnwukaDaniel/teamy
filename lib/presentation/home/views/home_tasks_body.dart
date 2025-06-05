@@ -1,10 +1,10 @@
 import 'package:teamy/imports.dart';
 
-class HomeTasksBody extends StatelessWidget with ThemeHelper {
+class HomeTasksBody extends StackedHookView<HomeViewmodel> with ThemeHelper {
   const HomeTasksBody({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context, model) {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
@@ -14,6 +14,20 @@ class HomeTasksBody extends StatelessWidget with ThemeHelper {
           'All Tasks',
           style: tl.copyWith(fontWeight: FontWeight.w900),
         ),
+      ),
+      body: ListView(
+        children:
+            model.tasks.map((e) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 6,
+                ),
+                child: TasksScreen(
+                  workspaceId: '',
+                ).buildTaskCard(e, Colors.red[300]!, WorkspaceViewmodel()),
+              );
+            }).toList(),
       ),
     );
   }
