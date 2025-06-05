@@ -23,7 +23,7 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
     if (res.status) {
       final tasks = res.data as List<TaskData>;
       final filter = tasks.where((e) => e.id == _currentTask.id).toList();
-      if(filter.isNotEmpty) _currentTask = filter.first;
+      if (filter.isNotEmpty) _currentTask = filter.first;
       getAndSetAllComments();
     } else {
       AppMessage.msg(res.message);
@@ -57,13 +57,23 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
     }
   }
 
-  void deleteComment(String commentId) {}
+  deleteComment(String comment) async {
+    setBusy(true);
+    final res = await WorkspaceRepo.deleteComment(_currentTask, comment);
+    setBusy(false);
+    if (res.status) {
+      AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);
+    } else {
+      AppMessage.msg(res.message);
+    }
+  }
 
   showEditDialog(BuildContext context, String comment) async {
     editCommentController.text = comment;
     await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder:
+          (context) => AlertDialog(
             title: Text('Edit Comment', style: tl),
             backgroundColor: bgColor,
             content: TextField(
@@ -98,31 +108,39 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
     fetchComments(_currentTask.id);
   }
 
-  void showDeleteDialog(BuildContext context, String commentId) {
-    showDialog(
+  showDeleteDialog(BuildContext context, String commentId) async {
+    await showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('Delete Comment'),
-            content: const Text(
+            backgroundColor: bgColor,
+            title: Text('Delete Comment', style: tm),
+            content: Text(
               'Are you sure you want to delete this comment?',
+              style: bl,
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(Colors.green),
+                ),
+                child: Text('Cancel', style: bm.copyWith(color: Colors.white)),
               ),
               TextButton(
-                onPressed: () {
-                  deleteComment(commentId);
-                  Navigator.pop(context);
+                onPressed: () async {
+                  await deleteComment(commentId);
+                  if (context.mounted) Navigator.pop(context);
                 },
-                style: TextButton.styleFrom(foregroundColor: Colors.red),
-                child: const Text('Delete'),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(Colors.red),
+                ),
+                child: Text('Delete', style: bm.copyWith(color: Colors.white)),
               ),
             ],
           ),
     );
+    fetchComments(_currentTask.id);
   }
 
   @override
