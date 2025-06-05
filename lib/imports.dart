@@ -1,4 +1,5 @@
-export 'package:flutter/material.dart';
+export 'package:flutter/material.dart' hide ConfirmDismissCallback;
+export 'package:flutter_slidable/flutter_slidable.dart';
 export 'package:teamy/splash_screen.dart';
 export 'package:shimmer/shimmer.dart';
 export 'package:overlay_support/overlay_support.dart';
@@ -40,4 +41,3 @@ export 'dart:ui' hide Image, decodeImageFromList, TextStyle, ImageDecoderCallbac
 export 'package:teamy/utils/task_helper.dart';
 export 'package:teamy/models/task_data.dart';
 export 'package:teamy/enums/task_status.dart';
-export 'package:flutter_slidable/flutter_slidable.dart';
