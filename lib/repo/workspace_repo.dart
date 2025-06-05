@@ -151,6 +151,31 @@ class WorkspaceRepo {
     }
   }
 
+  static Future<NetworkData> addComment(TaskData task, String comment) async {
+    try {
+      var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
+      final taskList =
+          jsonString.map((e) => TaskData.fromJson(jsonDecode(e))).toList();
+
+      final taskIndex = taskList.indexWhere((task) => task.id == task.id);
+      if (taskIndex == -1) {
+        return NetworkData(message: 'Task not found');
+      }
+      taskList[taskIndex].comments.add(comment);
+
+      jsonString = taskList.map((e) => jsonEncode(e.toJson())).toList();
+      await LocalStorage.setStringList(Preferences.tasksJson, jsonString);
+
+      return NetworkData(
+        status: true,
+        data: null,
+        message: 'Comment added successfully',
+      );
+    } catch (e) {
+      return NetworkData(message: 'Failed to update task try again $e');
+    }
+  }
+
   static Future<NetworkData> deleteComment(
     TaskData task,
     String comment,

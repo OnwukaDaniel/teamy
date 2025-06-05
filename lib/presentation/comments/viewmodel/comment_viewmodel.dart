@@ -36,10 +36,19 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
     notifyListeners();
   }
 
-  void addComment(String taskId) {
+  addComment(String taskId) async {
     if (commentController.text.trim().isEmpty) return;
+    final comment = commentController.text.trim();
+    setBusy(true);
+    final res = await WorkspaceRepo.addComment(_currentTask, comment);
     commentController.clear();
-    notifyListeners();
+    setBusy(false);
+    if (res.status) {
+      AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);
+    } else {
+      AppMessage.msg(res.message);
+    }
+    fetchComments(_currentTask.id);
   }
 
   editComment(String oldComment, String newComment) async {
