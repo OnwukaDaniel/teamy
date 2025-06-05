@@ -7,7 +7,7 @@ class WorkspaceRepo {
     String? asset,
   }) async {
     try {
-      final jsonString = await LocalStorage.getStringList(
+      var jsonString = await LocalStorage.getStringList(
         Preferences.workspaceJson,
       );
       final data =
@@ -25,6 +25,8 @@ class WorkspaceRepo {
           id: 'WorkSpace_${DateTime.now().toIso8601String()}',
         ),
       );
+      jsonString = data.map((e) => jsonEncode(e.toJson())).toList();
+      await LocalStorage.setStringList(Preferences.workspaceJson, jsonString);
       return NetworkData(status: true, data: null, message: 'Success');
     } catch (e) {
       return NetworkData(message: 'Failed to create workspace try again $e');

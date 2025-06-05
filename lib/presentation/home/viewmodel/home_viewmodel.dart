@@ -28,7 +28,8 @@ class HomeViewmodel extends BaseViewModel {
     final res = await WorkspaceRepo.getWorkSpaces();
     setBusy(false);
     if (res.status) {
-      workspaceList = res.status as List<WorkspaceData>;
+      workspaceList = res.data as List<WorkspaceData>;
+      '$workspaceList'.log;
       notifyListeners();
     }
   }
