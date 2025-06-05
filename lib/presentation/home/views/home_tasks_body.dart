@@ -11,7 +11,7 @@ class HomeTasksBody extends StatelessWidget with ThemeHelper {
         backgroundColor: bgColor,
         centerTitle: true,
         title: Text(
-          'ALl Tasks',
+          'All Tasks',
           style: tl.copyWith(fontWeight: FontWeight.w900),
         ),
       ),
