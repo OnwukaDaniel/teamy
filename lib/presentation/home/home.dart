@@ -1,6 +1,7 @@
 import 'package:teamy/imports.dart';
 import 'package:teamy/presentation/home/views/home_body.dart';
 import 'package:teamy/presentation/home/views/home_navigation_bar.dart';
+import 'package:teamy/presentation/home/views/home_tasks_body.dart';
 
 class Home extends StatelessWidget with ThemeHelper {
   const Home({super.key});
@@ -18,7 +19,7 @@ class Home extends StatelessWidget with ThemeHelper {
             children: [
               model.selectedIcon.name.toLowerCase() == 'home'
                   ? HomeBody()
-                  : Placeholder(),
+                  : HomeTasksBody(),
               Positioned(bottom: 1, child: HomeNavigationBar()),
               Positioned(
                 bottom: 16,
