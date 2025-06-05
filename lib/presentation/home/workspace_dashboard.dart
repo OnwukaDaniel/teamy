@@ -15,7 +15,7 @@ class WorkspaceDashboard extends StatelessWidget with ThemeHelper {
         centerTitle: true,
         title: Text(
           workspaceData.name,
-          style: tl.copyWith(fontWeight: FontWeight.w800),
+          style: bl.copyWith(fontWeight: FontWeight.w800),
         ),
       ),
       body: ListView(
@@ -58,6 +58,33 @@ class WorkspaceDashboard extends StatelessWidget with ThemeHelper {
               ),
             ],
           ),
+          24.h,
+          ...[
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    workspaceData.name,
+                    textAlign: TextAlign.center,
+                    style: tl.copyWith(fontWeight: FontWeight.w800),
+                  ),
+                  12.h,
+                  Text(
+                    workspaceData.description,
+                    textAlign: TextAlign.center,
+                    style: bl,
+                  ),
+                  32.h,
+                  Text(
+                    'Lists',
+                    style: bm.copyWith(fontWeight: FontWeight.w800),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ],
       ),
     );
