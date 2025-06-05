@@ -36,3 +36,5 @@ export 'package:teamy/presentation/workspace/workspace_dashboard.dart';
 export 'package:teamy/presentation/workspace/viewmodel/workspace_viewmodel.dart';
 export 'package:teamy/mixins/static_widgets.dart';
 export 'package:intl/intl.dart' hide TextDirection;
+export 'dart:ui' hide Image, decodeImageFromList, TextStyle, ImageDecoderCallback, Codec, Gradient, StrutStyle;
+export 'package:teamy/utils/task_helper.dart';
