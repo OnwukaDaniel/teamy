@@ -41,3 +41,4 @@ export 'dart:ui' hide Image, decodeImageFromList, TextStyle, ImageDecoderCallbac
 export 'package:teamy/utils/task_helper.dart';
 export 'package:teamy/models/task_data.dart';
 export 'package:teamy/enums/task_status.dart';
+export 'package:teamy/presentation/tasks/tasks_screen.dart';

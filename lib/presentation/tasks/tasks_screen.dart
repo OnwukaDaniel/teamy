@@ -21,6 +21,13 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
                 style: tl.copyWith(fontWeight: FontWeight.bold),
               ),
               centerTitle: true,
+              actions: [
+                IconButton(
+                  onPressed: () => showInfo(context),
+                  icon: Icon(Icons.info_outline_rounded, color: bl.color),
+                ),
+                12.w,
+              ],
             ),
             body:
                 model.isBusy
@@ -73,6 +80,32 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
     );
   }
 
+  showInfo(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: cardTheme,
+          title: Row(
+            children: [
+              Spacer(flex: 5),
+              Text('Tips', style: tl.copyWith(fontWeight: FontWeight.w900)),
+              Spacer(flex: 3),
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(Icons.close, color: bl.color),
+              ),
+            ],
+          ),
+          content: Text(
+            'Swipe task card to the right to delete task',
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildTaskSection({
     required String title,
     required List<TaskData> tasks,
@@ -99,7 +132,12 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
             ),
           )
         else
-          ...tasks.map((task) => _buildTaskCard(task, color, model)),
+          ...tasks.map(
+            (task) => Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: _buildTaskCard(task, color, model),
+            ),
+          ),
       ],
     );
   }
@@ -133,77 +171,92 @@ class TasksScreen extends StatelessWidget with ThemeHelper {
           ),
         ],
       ),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: cardTheme,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    task.description,
-                    style: bl.copyWith(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Deadline: $formattedDeadline',
-                    style: bs.copyWith(color: Colors.grey[600]),
-                  ),
-                  if (tags.isNotEmpty) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      'TAGS: $tags',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: bm.copyWith(
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.w500,
-                      ),
+      child: Material(
+        borderRadius: BorderRadius.circular(12),
+        clipBehavior: Clip.hardEdge,
+        child: Builder(
+          builder: (context) {
+            return InkWell(
+              onTap: () => model.goToComments(context),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: cardTheme.withAlpha(200),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
                     ),
                   ],
-                ],
-              ),
-            ),
-            Builder(
-              builder: (context) {
-                return Material(
-                  borderRadius: BorderRadius.circular(8),
-                  clipBehavior: Clip.hardEdge,
-                  child: InkWell(
-                    onTap: () async {
-                      await TaskHelper().createTask(
-                        context,
-                        task.workspaceId,
-                        taskData: task,
-                      );
-                      model.fetchTasks(workspaceId);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: sectionColor.withAlpha(100),
-                        borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            task.description,
+                            style: bl.copyWith(fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Deadline: $formattedDeadline',
+                            style: bs.copyWith(color: Colors.grey[600]),
+                          ),
+                          if (tags.isNotEmpty) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              'TAGS: $tags',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: bm.copyWith(
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
-                      child: Icon(Icons.edit, color: bl.color, size: 20),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
+                    Builder(
+                      builder: (context) {
+                        return Material(
+                          borderRadius: BorderRadius.circular(8),
+                          clipBehavior: Clip.hardEdge,
+                          child: InkWell(
+                            onTap: () async {
+                              await TaskHelper().createTask(
+                                context,
+                                task.workspaceId,
+                                taskData: task,
+                              );
+                              model.fetchTasks(workspaceId);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: sectionColor.withAlpha(100),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Icon(
+                                Icons.edit,
+                                color: bl.color,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

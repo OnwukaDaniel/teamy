@@ -1,5 +1,4 @@
 import 'package:teamy/imports.dart';
-import 'package:teamy/presentation/tasks/tasks_screen.dart';
 
 class WorkspaceViewmodel extends BaseViewModel {
   TextEditingController descriptionController = TextEditingController();
@@ -20,7 +19,7 @@ class WorkspaceViewmodel extends BaseViewModel {
     '#job-to-be-done',
     '#commercial',
   ];
-  List<String> _addedTagList = [];
+  final List<String> _addedTagList = [];
 
   List<String> get addedTagList => _addedTagList;
   List<TaskData> _tasks = [];
@@ -84,7 +83,7 @@ class WorkspaceViewmodel extends BaseViewModel {
       status: TaskStatus.toDo.name,
       tags: addedTagList,
     );
-    if(editingTaskData != null) {
+    if (editingTaskData != null) {
       editingTaskData!.tags = addedTagList;
       editingTaskData!.deadline = date!.toIso8601String();
       editingTaskData!.description = description;
@@ -141,6 +140,17 @@ class WorkspaceViewmodel extends BaseViewModel {
   }
 
   goToTasks(BuildContext context) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (_) {
+          return TasksScreen(workspaceId: workspaceData.id);
+        },
+      ),
+    );
+  }
+
+  goToComments(BuildContext context) {
     Navigator.push(
       context,
       CupertinoPageRoute(
