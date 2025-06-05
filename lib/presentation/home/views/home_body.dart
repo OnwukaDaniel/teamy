@@ -73,55 +73,62 @@ class HomeBody extends StackedHookView<HomeViewmodel> with ThemeHelper {
                   ),
                   16.h,
                   Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
                       padding: EdgeInsets.all(16),
                       itemCount: model.workspaceList.length,
                       itemBuilder: (_, index) {
                         final data = model.workspaceList[index];
-                        return Material(
-                          clipBehavior: Clip.hardEdge,
-                          borderRadius: BorderRadius.circular(12),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 4,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        data.name,
-                                        style: tm.copyWith(
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                      16.h,
-                                      Text(
-                                        data.description,
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: bs.copyWith(
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                16.w,
-                                if (data.asset.isNotEmpty)
-                                  Expanded(child: Image.asset(data.asset)),
-                              ],
-                            ),
-                          ),
-                        );
+                        return workspaceCard(data, model);
                       },
+                      separatorBuilder: (_, __) => 8.h,
                     ),
                   ),
                   kToolbarHeight.h,
                 ],
               ),
+    );
+  }
+
+  Widget workspaceCard(WorkspaceData data, HomeViewmodel model) {
+    return Builder(
+      builder: (context) {
+        return Material(
+          clipBehavior: Clip.hardEdge,
+          borderRadius: BorderRadius.circular(12),
+          child: InkWell(
+            onTap: () => model.viewWorkSpace(context, data),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data.name,
+                          style: tm.copyWith(fontWeight: FontWeight.w800),
+                        ),
+                        16.h,
+                        Text(
+                          data.description,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: bs.copyWith(fontWeight: FontWeight.w800),
+                        ),
+                      ],
+                    ),
+                  ),
+                  16.w,
+                  if (data.asset.isNotEmpty)
+                    Expanded(child: Image.asset(data.asset)),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
     );
   }
 }

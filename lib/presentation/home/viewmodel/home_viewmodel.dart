@@ -41,4 +41,11 @@ class HomeViewmodel extends BaseViewModel {
     );
     getWorkspace();
   }
+
+  viewWorkSpace(BuildContext context, WorkspaceData data) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(builder: (_) => WorkspaceDashboard(data)),
+    );
+  }
 }
