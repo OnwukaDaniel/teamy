@@ -1,6 +1,5 @@
 import 'package:teamy/imports.dart';
 import 'package:teamy/theme/text_utils.dart';
-import 'package:teamy/utils/app_color.dart';
 
 class AppTheme {
   static const double titleLarge = 24;
