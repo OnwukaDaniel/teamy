@@ -43,3 +43,5 @@ export 'package:teamy/data/task_data.dart';
 export 'package:teamy/domain/enums/task_status.dart';
 export 'package:teamy/presentation/tasks/tasks_screen.dart';
 export 'package:teamy/presentation/comments/viewmodel/comment_viewmodel.dart';
+export 'package:teamy/repo/i_workspace_repository.dart';
+export 'package:teamy/repo/i_auth_repo.dart';

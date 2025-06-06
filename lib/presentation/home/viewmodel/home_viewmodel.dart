@@ -1,9 +1,11 @@
 import 'package:teamy/imports.dart';
 
 class HomeViewmodel extends BaseViewModel {
+  final IAuthRepo authRepo = AuthRepo();
   late BottomIcons selectedIcon;
   UserData? userData;
   List<WorkspaceData> _workspaceList = [];
+  final IWorkspaceRepository workspaceRepo = WorkspaceRepositoryImpl();
 
   List<WorkspaceData> get workspaceList => _workspaceList;
   final List<BottomIcons> bottomIcons = [
@@ -22,12 +24,12 @@ class HomeViewmodel extends BaseViewModel {
   }
 
   fetchUserLocal() async {
-    userData = await AuthRepo.getLocalUser();
+    userData = await authRepo.getLocalUser();
   }
 
   getWorkspace() async {
     setBusy(true);
-    final res = await WorkspaceRepo.getWorkSpaces();
+    final res = await workspaceRepo.getWorkSpaces();
     setBusy(false);
     if (res.status) {
       _workspaceList.clear();

@@ -5,6 +5,7 @@ class WorkspaceViewmodel extends BaseViewModel {
   final descriptionController = TextEditingController();
   final dateControllerController = TextEditingController();
   final commentsController = TextEditingController();
+  final IWorkspaceRepository workspaceRepo = WorkspaceRepositoryImpl();
   DateTime? date;
   TaskData? editingTaskData;
   final formKey = GlobalKey<FormState>();
@@ -92,8 +93,8 @@ class WorkspaceViewmodel extends BaseViewModel {
     setBusy(true);
     final res =
         editingTaskData == null
-            ? await WorkspaceRepo.createTask(taskData)
-            : await WorkspaceRepo.editTask(editingTaskData!);
+            ? await workspaceRepo.createTask(taskData)
+            : await workspaceRepo.editTask(editingTaskData!);
     setBusy(false);
     if (res.status) {
       AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);
@@ -105,7 +106,7 @@ class WorkspaceViewmodel extends BaseViewModel {
 
   fetchTasks(String workspaceId) async {
     setBusy(true);
-    final res = await WorkspaceRepo.getTasks(workspaceId);
+    final res = await workspaceRepo.getTasks(workspaceId);
     setBusy(false);
     if (res.status) {
       _tasks = res.data ?? [];
@@ -117,7 +118,7 @@ class WorkspaceViewmodel extends BaseViewModel {
 
   deleteTask(String taskId, String workspaceId) async {
     setBusy(true);
-    final res = await WorkspaceRepo.deleteTask(taskId);
+    final res = await workspaceRepo.deleteTask(taskId);
     setBusy(false);
     if (res.status) {
       AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);
@@ -157,7 +158,7 @@ class WorkspaceViewmodel extends BaseViewModel {
 
   deleteWorkSpace(BuildContext context) async {
     setBusy(true);
-    final res = await WorkspaceRepo.deleteWorkspace(workspaceData.id);
+    final res = await workspaceRepo.deleteWorkspace(workspaceData.id);
     setBusy(false);
     if (res.status && context.mounted) {
       AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);

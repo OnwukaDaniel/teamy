@@ -1,7 +1,10 @@
 import 'package:teamy/imports.dart';
 
-class WorkspaceRepo {
-  static Future<NetworkData> createWorkSpace(
+class WorkspaceRepositoryImpl implements IWorkspaceRepository {
+  final IAuthRepo authRepo = AuthRepo();
+
+  @override
+  Future<NetworkData> createWorkSpace(
     String name,
     String desc, {
     String? asset,
@@ -12,7 +15,7 @@ class WorkspaceRepo {
       );
       final data =
           jsonString.map((e) => WorkspaceData.fromJson(jsonDecode(e))).toList();
-      final local = await AuthRepo.getLocalUser();
+      final local = await authRepo.getLocalUser();
       if (local == null) {
         return NetworkData(message: 'Unable to get local user. Sign in');
       }
@@ -33,7 +36,7 @@ class WorkspaceRepo {
     }
   }
 
-  static Future deleteWorkspace(String workspaceId) async {
+  @override Future<NetworkData> deleteWorkspace(String workspaceId) async {
     try {
       var jsonString = await LocalStorage.getStringList(
         Preferences.workspaceJson,
@@ -54,12 +57,12 @@ class WorkspaceRepo {
     }
   }
 
-  static Future<NetworkData> getWorkSpaces() async {
+  @override Future<NetworkData> getWorkSpaces() async {
     try {
       final jsonString = await LocalStorage.getStringList(
         Preferences.workspaceJson,
       );
-      final local = await AuthRepo.getLocalUser();
+      final local = await authRepo.getLocalUser();
       if (local == null) {
         return NetworkData(message: 'Unable to get local user. Sign in');
       }
@@ -72,7 +75,7 @@ class WorkspaceRepo {
     }
   }
 
-  static Future<NetworkData> createTask(TaskData data) async {
+  @override Future<NetworkData> createTask(TaskData data) async {
     try {
       var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
       final taskList =
@@ -87,7 +90,7 @@ class WorkspaceRepo {
     }
   }
 
-  static Future<NetworkData> getTasks(String workspaceId) async {
+  @override Future<NetworkData> getTasks(String workspaceId) async {
     try {
       final jsonString = await LocalStorage.getStringList(
         Preferences.tasksJson,
@@ -106,7 +109,7 @@ class WorkspaceRepo {
     }
   }
 
-  static Future<NetworkData> editTask(TaskData updatedTask) async {
+  @override Future<NetworkData> editTask(TaskData updatedTask) async {
     try {
       var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
       final taskList =
@@ -137,7 +140,7 @@ class WorkspaceRepo {
     }
   }
 
-  static Future<NetworkData> editComment(
+  @override Future<NetworkData> editComment(
     TaskData task,
     String oldComment,
     String newComment,
@@ -172,7 +175,7 @@ class WorkspaceRepo {
     }
   }
 
-  static Future<NetworkData> addComment(TaskData task, String comment) async {
+  @override Future<NetworkData> addComment(TaskData task, String comment) async {
     try {
       var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
       final taskList =
@@ -197,7 +200,7 @@ class WorkspaceRepo {
     }
   }
 
-  static Future<NetworkData> deleteComment(
+  @override Future<NetworkData> deleteComment(
     TaskData task,
     String comment,
   ) async {
@@ -225,7 +228,7 @@ class WorkspaceRepo {
     }
   }
 
-  static Future<NetworkData> deleteTask(String taskId) async {
+  @override Future<NetworkData> deleteTask(String taskId) async {
     try {
       var jsonString = await LocalStorage.getStringList(Preferences.tasksJson);
       final taskList =

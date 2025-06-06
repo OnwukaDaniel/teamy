@@ -1,11 +1,15 @@
 import 'package:teamy/imports.dart';
 
-class AuthRepo {
-  static Future<NetworkData> signIn(String email, String password) async {
+class AuthRepo extends IAuthRepo {
+  @override
+  Future<NetworkData> signIn(String email, String password) async {
     try {
-      final jsonString = await LocalStorage.getStringList(Preferences.usersListJson);
+      final jsonString = await LocalStorage.getStringList(
+        Preferences.usersListJson,
+      );
       '$jsonString'.log;
-      final data = jsonString.map((e) => UserData.fromJson(jsonDecode(e))).toList();
+      final data =
+          jsonString.map((e) => UserData.fromJson(jsonDecode(e))).toList();
       final users = data.where(
         (e) => e.email == email && e.password == password,
       );
@@ -22,13 +26,12 @@ class AuthRepo {
     }
   }
 
-  static Future<NetworkData> signUp(
-    String email,
-    String password,
-    String name,
-  ) async {
+  @override
+  Future<NetworkData> signUp(String email, String password, String name) async {
     try {
-      final jsonString = await LocalStorage.getStringList(Preferences.usersListJson);
+      final jsonString = await LocalStorage.getStringList(
+        Preferences.usersListJson,
+      );
       if (jsonString.isNotEmpty) {
         final data =
             jsonString.map((e) => UserData.fromJson(jsonDecode(e))).toList();
@@ -54,7 +57,7 @@ class AuthRepo {
     }
   }
 
-  static UserData _createUser(String email, String password, String name) {
+  UserData _createUser(String email, String password, String name) {
     return UserData(
       id: 'User_${DateTime.now().toIso8601String()}',
       name: name,
@@ -63,7 +66,8 @@ class AuthRepo {
     );
   }
 
-  static Future<UserData?> getLocalUser() async {
+  @override
+  Future<UserData?> getLocalUser() async {
     try {
       final jsonString = await LocalStorage.getString(Preferences.usersJson);
       return UserData.fromJson(jsonDecode(jsonString));

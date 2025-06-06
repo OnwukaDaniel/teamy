@@ -1,6 +1,8 @@
 import 'package:teamy/imports.dart';
 
 class CommentViewModel extends BaseViewModel with ThemeHelper {
+  final IWorkspaceRepository workspaceRepo = WorkspaceRepositoryImpl();
+
   final commentController = TextEditingController();
   final editCommentController = TextEditingController();
   final List<String> _comments = [];
@@ -18,7 +20,7 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
 
   fetchComments(String taskId) async {
     setBusy(true);
-    final res = await WorkspaceRepo.getTasks(_currentTask.workspaceId);
+    final res = await workspaceRepo.getTasks(_currentTask.workspaceId);
     setBusy(false);
     if (res.status) {
       final tasks = res.data as List<TaskData>;
@@ -40,7 +42,7 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
     if (commentController.text.trim().isEmpty) return;
     final comment = commentController.text.trim();
     setBusy(true);
-    final res = await WorkspaceRepo.addComment(_currentTask, comment);
+    final res = await workspaceRepo.addComment(_currentTask, comment);
     commentController.clear();
     setBusy(false);
     if (res.status) {
@@ -53,7 +55,7 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
 
   editComment(String oldComment, String newComment) async {
     setBusy(true);
-    final res = await WorkspaceRepo.editComment(
+    final res = await workspaceRepo.editComment(
       _currentTask,
       oldComment,
       newComment,
@@ -68,7 +70,7 @@ class CommentViewModel extends BaseViewModel with ThemeHelper {
 
   deleteComment(String comment) async {
     setBusy(true);
-    final res = await WorkspaceRepo.deleteComment(_currentTask, comment);
+    final res = await workspaceRepo.deleteComment(_currentTask, comment);
     setBusy(false);
     if (res.status) {
       AppMessage.msg(res.message, textColor: Colors.white, color: Colors.green);

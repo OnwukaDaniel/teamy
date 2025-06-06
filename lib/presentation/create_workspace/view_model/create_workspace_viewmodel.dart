@@ -1,6 +1,7 @@
 import 'package:teamy/imports.dart';
 
 class CreateWorkspaceViewmodel extends BaseViewModel {
+  final IWorkspaceRepository workspaceRepo = WorkspaceRepositoryImpl();
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   String _icon = '';
@@ -24,7 +25,7 @@ class CreateWorkspaceViewmodel extends BaseViewModel {
   createWorkSpace(BuildContext context) async {
     if (!formKey.currentState!.validate()) return;
     setBusy(true);
-    final res = await WorkspaceRepo.createWorkSpace(
+    final res = await workspaceRepo.createWorkSpace(
       nameController.text.trim(),
       descriptionController.text.trim(),
       asset: _icon,

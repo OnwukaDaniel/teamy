@@ -1,6 +1,7 @@
 import 'package:teamy/imports.dart';
 
 class SignInViewmodel extends BaseViewModel {
+  final IAuthRepo authRepo = AuthRepo();
   final nameController = TextEditingController();
   final rePasswordController = TextEditingController();
   final emailController = TextEditingController();
@@ -29,7 +30,7 @@ class SignInViewmodel extends BaseViewModel {
     setBusy(true);
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-    final res = await AuthRepo.signIn(email, password);
+    final res = await authRepo.signIn(email, password);
     setBusy(false);
     switch (res.status) {
       case true:
@@ -51,7 +52,7 @@ class SignInViewmodel extends BaseViewModel {
     final name = nameController.text.trim();
     final password = passwordController.text.trim();
     final email = emailController.text.trim();
-    final res = await AuthRepo.signUp(email, password, name);
+    final res = await authRepo.signUp(email, password, name);
 
     setBusy(false);
     switch (res.status) {
