@@ -1,5 +1,11 @@
 import 'package:teamy/imports.dart';
 
+//import 'middleware/logger.dart';
+
+Handler middleware(Handler handler) {
+  return handler.use(logger());
+}
+
 void main() {
   runApp(const MyApp());
 }

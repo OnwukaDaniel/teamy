@@ -32,17 +32,18 @@ class SignInViewmodel extends BaseViewModel {
     final password = passwordController.text.trim();
     final res = await authRepo.signIn(email, password);
     setBusy(false);
-    switch (res.status) {
-      case true:
-        if (res.data == null) {
-          AppMessage.msg(res.message);
-        } else if (context.mounted) {
-          completeAuth(res, context, create: false);
-        }
-        break;
-      case false:
-        AppMessage.msg(res.message);
-        break;
+    if (res == null) {
+      AppMessage.msg('Unable to sign in');
+    } else if (context.mounted) {
+      LocalStorage.setString(Preferences.usersJson, jsonEncode(res));
+      AppMessage.msg('Success', color: Colors.green, textColor: Colors.white);
+      if (context.mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          CupertinoPageRoute(builder: (_) => Home()),
+              (_) => false,
+        );
+      }
     }
   }
 
@@ -55,17 +56,18 @@ class SignInViewmodel extends BaseViewModel {
     final res = await authRepo.signUp(email, password, name);
 
     setBusy(false);
-    switch (res.status) {
-      case true:
-        if (res.data == null) {
-          AppMessage.msg(res.message);
-        } else if (context.mounted) {
-          completeAuth(res, context, create: true);
-        }
-        break;
-      case false:
-        AppMessage.msg(res.message);
-        break;
+    if (res == null) {
+      AppMessage.msg('Unable to sign up');
+    } else if (context.mounted) {
+      LocalStorage.setString(Preferences.usersJson, jsonEncode(res));
+      AppMessage.msg('Success', color: Colors.green, textColor: Colors.white);
+      if (context.mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          CupertinoPageRoute(builder: (_) => Home()),
+          (_) => false,
+        );
+      }
     }
   }
 
