@@ -1,8 +1,8 @@
 import 'package:teamy/imports.dart';
 
 class CommentViewModel extends BaseViewModel with ThemeHelper {
-  final TextEditingController commentController = TextEditingController();
-  final TextEditingController editCommentController = TextEditingController();
+  final commentController = TextEditingController();
+  final editCommentController = TextEditingController();
   final List<String> _comments = [];
   late TaskData _currentTask;
 

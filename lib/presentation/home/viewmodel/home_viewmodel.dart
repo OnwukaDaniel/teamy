@@ -3,7 +3,9 @@ import 'package:teamy/imports.dart';
 class HomeViewmodel extends BaseViewModel {
   late BottomIcons selectedIcon;
   UserData? userData;
-  List<WorkspaceData> workspaceList = [];
+  List<WorkspaceData> _workspaceList = [];
+
+  List<WorkspaceData> get workspaceList => _workspaceList;
   final List<BottomIcons> bottomIcons = [
     BottomIcons(name: 'Home', asset: 'assets/home.svg'),
     BottomIcons(name: 'My Workspaces', asset: 'assets/workspaces.svg'),
@@ -28,8 +30,8 @@ class HomeViewmodel extends BaseViewModel {
     final res = await WorkspaceRepo.getWorkSpaces();
     setBusy(false);
     if (res.status) {
-      workspaceList.clear();
-      workspaceList = res.data as List<WorkspaceData>;
+      _workspaceList.clear();
+      _workspaceList = res.data as List<WorkspaceData>;
       notifyListeners();
     }
   }

@@ -1,14 +1,14 @@
 import 'package:teamy/imports.dart';
 
 class CreateWorkspaceViewmodel extends BaseViewModel {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
   String _icon = '';
   final formKey = GlobalKey<FormState>();
 
   String get icon => _icon;
 
-  List<String> icons = [
+  final List<String> icons = [
     'assets/icon1.png',
     'assets/icon2.png',
     'assets/icon3.png',

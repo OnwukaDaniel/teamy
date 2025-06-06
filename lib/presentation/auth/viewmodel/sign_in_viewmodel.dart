@@ -1,10 +1,10 @@
 import 'package:teamy/imports.dart';
 
 class SignInViewmodel extends BaseViewModel {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController rePasswordController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final nameController = TextEditingController();
+  final rePasswordController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   bool _visiblePassword = false;
   bool _visibleConfirmPassword = false;
   final signInFormKey = GlobalKey<FormState>();
@@ -79,19 +79,27 @@ class SignInViewmodel extends BaseViewModel {
     );
   }
 
-  completeAuth(NetworkData res, BuildContext context, {required bool create}) async {
+  completeAuth(
+    NetworkData res,
+    BuildContext context, {
+    required bool create,
+  }) async {
     final user = res.data as UserData;
     if (create) {
-      final jsonString = await LocalStorage.getStringList(Preferences.usersListJson);
+      final jsonString = await LocalStorage.getStringList(
+        Preferences.usersListJson,
+      );
       jsonString.add(jsonEncode(user.toJson()));
       LocalStorage.setStringList(Preferences.usersListJson, jsonString);
     }
     LocalStorage.setString(Preferences.usersJson, jsonEncode(user));
     AppMessage.msg(res.message, color: Colors.green, textColor: Colors.white);
-    Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute(builder: (_) => Home()),
-      (_) => false,
-    );
+    if (context.mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        CupertinoPageRoute(builder: (_) => Home()),
+        (_) => false,
+      );
+    }
   }
 }

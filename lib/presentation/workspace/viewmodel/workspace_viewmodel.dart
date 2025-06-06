@@ -2,15 +2,15 @@ import 'package:teamy/imports.dart';
 import 'package:teamy/presentation/comments/comments_screen.dart';
 
 class WorkspaceViewmodel extends BaseViewModel {
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController dateControllerController = TextEditingController();
-  TextEditingController commentsController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final dateControllerController = TextEditingController();
+  final commentsController = TextEditingController();
   DateTime? date;
   TaskData? editingTaskData;
   final formKey = GlobalKey<FormState>();
   late WorkspaceData workspaceData;
 
-  List<String> tagList = [
+  final List<String> tagList = [
     '#project',
     '#priority-high',
     '#wins',
@@ -27,7 +27,6 @@ class WorkspaceViewmodel extends BaseViewModel {
 
   List<TaskData> get tasks => _tasks;
 
-  // Get tasks filtered by status
   List<TaskData> get toDoTasks =>
       _tasks.where((task) => task.status == TaskStatus.toDo.name).toList();
 
