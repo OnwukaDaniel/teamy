@@ -1,7 +1,11 @@
 import 'package:teamy/imports.dart';
 
 class TaskHelper with ThemeHelper, StaticWidgets {
-  createTask(BuildContext context, String workspaceId, {TaskData? taskData}) async {
+  createTask(
+    BuildContext context,
+    String workspaceId, {
+    TaskData? taskData,
+  }) async {
     final size = MediaQuery.of(context).size;
     await showDialog(
       context: context,
@@ -54,6 +58,37 @@ class TaskHelper with ThemeHelper, StaticWidgets {
                           controller: model.commentsController,
                         ),
                         16.h,
+                        if (taskData != null) ...[
+                          16.h,
+                          Text('Mark as:', style: bm),
+                          12.h,
+                          Wrap(
+                            children:
+                            TaskStatus.values.map((e) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                ),
+                                child: TextButton(
+                                  onPressed: () => model.updateStatus(e),
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStatePropertyAll(
+                                      model.editingTaskData?.status == e.name
+                                          ? Colors.green
+                                          : Colors.transparent,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    e.name,
+                                    style: bm.copyWith(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
                         Text('Tags', style: bm),
                         12.h,
                         Wrap(
@@ -104,7 +139,7 @@ class TaskHelper with ThemeHelper, StaticWidgets {
                                   : Padding(
                                     padding: const EdgeInsets.all(8),
                                     child: Text(
-                                      '${taskData == null? 'Create': 'Edit'} Task',
+                                      '${taskData == null ? 'Create' : 'Edit'} Task',
                                       style: bl.copyWith(color: Colors.white),
                                     ),
                                   ),

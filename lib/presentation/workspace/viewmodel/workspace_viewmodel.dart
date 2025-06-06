@@ -70,6 +70,11 @@ class WorkspaceViewmodel extends BaseViewModel {
     notifyListeners();
   }
 
+  updateStatus(TaskStatus input) {
+    if(editingTaskData != null) editingTaskData!.status = input.name;
+    notifyListeners();
+  }
+
   createTask(BuildContext context, String workspaceId) async {
     if (!formKey.currentState!.validate()) return;
     if (date == null) return AppMessage.msg('Select Deadline');
