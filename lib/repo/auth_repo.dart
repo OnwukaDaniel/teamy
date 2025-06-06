@@ -1,69 +1,49 @@
+import 'package:dio/dio.dart';
 import 'package:teamy/imports.dart';
 
 class AuthRepo extends IAuthRepo {
+  final Dio _dio = Dio(BaseOptions(
+    baseUrl: 'http://localhost:8080',
+    contentType: 'application/json',
+    connectTimeout: const Duration(seconds: 5),
+    receiveTimeout: const Duration(seconds: 5),
+  ));
+
   @override
-  Future<NetworkData> signIn(String email, String password) async {
+  Future<UserData?> signIn(String email, String password) async {
     try {
-      final jsonString = await LocalStorage.getStringList(
-        Preferences.usersListJson,
+      final response = await _dio.post(
+        '/auth/sign_in',
+        data: {
+          'email': email,
+          'password': password,
+        },
       );
-      '$jsonString'.log;
-      final data =
-          jsonString.map((e) => UserData.fromJson(jsonDecode(e))).toList();
-      final users = data.where(
-        (e) => e.email == email && e.password == password,
-      );
-      if (users.isEmpty) {
-        return NetworkData(
-          status: true,
-          data: null,
-          message: 'Invalid credentials',
-        );
+      final data = response.data['data'];
+      if (data != null) {
+        return UserData.fromJson(data);
       }
-      return NetworkData(status: true, data: users.first, message: 'Success');
-    } catch (e) {
-      return NetworkData(message: 'Unable to sign in. $e');
-    }
+    } catch (_) {}
+    return null;
   }
 
   @override
-  Future<NetworkData> signUp(String email, String password, String name) async {
+  Future<UserData?> signUp(String email, String password, String name) async {
     try {
-      final jsonString = await LocalStorage.getStringList(
-        Preferences.usersListJson,
+      final response = await _dio.post(
+        '/auth/sign_up',
+        data: {
+          'email': email,
+          'password': password,
+          'name': name,
+        },
       );
-      if (jsonString.isNotEmpty) {
-        final data =
-            jsonString.map((e) => UserData.fromJson(jsonDecode(e))).toList();
-        final users = data.where(
-          (e) => e.email == email && e.password == password,
-        );
-        if (users.isNotEmpty) {
-          return NetworkData(
-            status: true,
-            data: null,
-            message: 'Credentials exist',
-          );
-        } else {
-          final user = _createUser(email, password, name);
-          return NetworkData(status: true, data: user, message: 'Success');
-        }
-      } else {
-        final user = _createUser(email, password, name);
-        return NetworkData(status: true, data: user, message: 'Success');
+      final data = response.data['data'];
+      if (data != null) {
+        return UserData.fromJson(data);
       }
-    } catch (e) {
-      return NetworkData(message: 'Unable to sign up. $e');
-    }
-  }
-
-  UserData _createUser(String email, String password, String name) {
-    return UserData(
-      id: 'User_${DateTime.now().toIso8601String()}',
-      name: name,
-      email: email,
-      password: password,
-    );
+    } catch (_) {}
+    return null;
   }
 
   @override
@@ -71,7 +51,7 @@ class AuthRepo extends IAuthRepo {
     try {
       final jsonString = await LocalStorage.getString(Preferences.usersJson);
       return UserData.fromJson(jsonDecode(jsonString));
-    } catch (e) {}
+    } catch (_) {}
     return null;
   }
 }
